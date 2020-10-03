@@ -7,13 +7,13 @@ TODO - write method to get list of spiders: basically done, though there'll need
      - add menu to allow user to specify configuration of input urls
      - allow shelf, item and combination spiders to be run using some for of intuitive menu
      - write multiprocessing implementation - crochet/pathos worked before but is there a more elegant solution?
-     - end the process if ths method is run, as it will not allow you to run further scrapes after its complete
      - import spider settings for use in crawler process.
 """
 import inspect
 from scrapy.crawler import CrawlerProcess
 from HousingPriceScraper.HousingPriceScraper.functions.menus import end_process
-from HousingPriceScraper.HousingPriceScraper.spiders.AncestorSpider.Exoskeleton import AncestorSpider
+from HousingPriceScraper.HousingPriceScraper.spiders.DummySpiders.DummyBooks import DummyBooksSpider
+from HousingPriceScraper.HousingPriceScraper.spiders.DummySpiders.DummyQuotes import DummyQuotesSpider
 
 
 def simultaneous_run(list_of_spiders):
@@ -38,5 +38,4 @@ def run_scrapers():
     """
     spiders_lst = [obj for obj in globals().values() if inspect.isclass(obj) and str(obj).split('.')[2] == 'spiders']
     simultaneous_run(spiders_lst)
-    print('\nwell done for making it this far, but theres nothing more to see here\n')
     return True

@@ -19,7 +19,7 @@ class AncestorSpider(scrapy.Spider, SpiderMethods):
     name = None
     input_urls = []
     custom_settings = {}
-    data_path = 'HousingPriceScraper/HousingPriceScraper/data/raw_data/{}/{}'.format(name, date_today())
+    data_path = 'data/raw_data/{}/{}'.format(name, date_today())
 
     def start_requests(self):
         """
@@ -27,7 +27,7 @@ class AncestorSpider(scrapy.Spider, SpiderMethods):
 
         :return: request object(object?) which calls the parse method
         """
-        check_make_dir(folder=self.data_path.split('Scraper/')[-1])
+        check_make_dir(folder=self.data_path)
         for url in self.input_urls:
             yield scrapy.Request(url=url, callback=self.parse)
 

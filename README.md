@@ -8,9 +8,9 @@ home made web scraping project intended to allow for robust andscalable scraping
 - succesfullly ticked off three bullet points so giving myself a freebie here
 
 # TODO
+- *write methods for scraping via bpth xpath and css selectors*
 - write dummy spider to test run option
 - write legitimate, non dummy spiders, requires further work first
-- *write methods for scraping via bpth xpath and css selectors*
 - write method for selecing input urls for spiders via menu
 - write method to allow user to pick between different spiders in menu
 - write method to ensure spider actually call upon their own settings when run

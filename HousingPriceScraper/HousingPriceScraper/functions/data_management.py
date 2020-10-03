@@ -3,7 +3,6 @@ functions used to store or interact with the data. currently includes date relat
 
 TODO - will eventually need to write a suite of functions to interact with data and its structures
 """
-import os
 from pathlib import Path
 from datetime import date
 
@@ -15,10 +14,8 @@ def check_make_dir(folder):
     :param folder: folder to check for / makes name. accepts multiple layers
     :return: sticks the folder where the sun don't shine
     """
-    base_directory = 'HousingPriceScraper/HousingPriceScraper/'
-    if folder not in os.listdir(base_directory):
-        Path('{}{}'.format(base_directory, folder)).mkdir(parents=True, exist_ok=True)
-    print('directory ready at: \n{}{}'.format(base_directory, folder))
+    Path('{}'.format(folder)).mkdir(parents=True, exist_ok=True)
+    print('directory ready at {}'.format(folder))
 
 
 def date_today():

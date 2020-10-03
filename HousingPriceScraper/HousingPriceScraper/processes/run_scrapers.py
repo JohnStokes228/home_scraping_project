@@ -12,6 +12,7 @@ TODO - write method to get list of spiders: basically done, though there'll need
 """
 import inspect
 from scrapy.crawler import CrawlerProcess
+from HousingPriceScraper.HousingPriceScraper.functions.menus import end_process
 from HousingPriceScraper.HousingPriceScraper.spiders.AncestorSpider.Exoskeleton import AncestorSpider
 
 
@@ -26,6 +27,7 @@ def simultaneous_run(list_of_spiders):
     for spider in list_of_spiders:
         process.crawl(spider)
     process.start()
+    end_process()
 
 
 def run_scrapers():

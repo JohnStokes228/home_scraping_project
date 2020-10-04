@@ -15,5 +15,5 @@ class DummyQuotesSpider(AncestorSpider):
     data_path = 'data/raw_data/dummy_data/{}/{}'.format(name, date_today())
 
     def parse(self, response):
-        print('test passed dummy quotes')
+
         pass

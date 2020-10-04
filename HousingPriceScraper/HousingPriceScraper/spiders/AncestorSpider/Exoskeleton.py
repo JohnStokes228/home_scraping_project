@@ -33,9 +33,10 @@ class AncestorSpider(scrapy.Spider, SpiderMethods):
 
     def parse(self, response):
         """
-        dummy func to be overwritten in actual spiders
+        dummy func to be overwritten in actual spiders. this function will dictate what to do once arriving at the
+        response url.
 
-        :param response: a request url
-        :return: scrapy will scrape.
+        :param response: scrapy response object - a request url
+        :return: scrape target url. if told to save then hopefully it'll do just that ey ;)
         """
         pass

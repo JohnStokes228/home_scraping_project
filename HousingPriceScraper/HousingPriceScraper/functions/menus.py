@@ -6,6 +6,8 @@ rather like a suite of individual menus.
 TODO - write a method that utilises the back button to properly test it
      - it may be that some of these functions end up elsewhere as I can see end_process being useful...
 """
+import string
+import os
 
 
 def end_process():
@@ -25,6 +27,17 @@ def return_false():
     :return: True lol jk it returns False
     """
     return False
+
+
+def alphabet_list(length):
+    """
+    create list of alphabetical letters of a given length
+
+    :param length: integer length of string
+    :return: alphabet list of given length
+    """
+    alpha_list = list(string.ascii_lowercase)
+    return alpha_list[:length]
 
 
 def final_option(dict_of_options, back):
@@ -67,3 +80,28 @@ def basic_menu(dict_of_options, back=False):
             choose = dict_of_options[list_of_options[int(pick)]]()
         else:
             print('{} is not currently an option!\n'.format(pick))
+
+
+def select_spiders(spiders_list, project_list=None):
+    """
+    allows the user to select which spiders to run using comma separators
+
+    :param project_list: 'chosen' list of projects to display spiders for
+    :param spiders_list: full list of read in spiders
+    :return: list containing the spiders the user has selected to run
+    """
+    if not project_list:
+        project_list = [i.split('.')[0] for i in os.listdir('HousingPriceScraper/HousingPriceScraper/spiders/SpiderGroups')[:-1]]
+    projects = list(enumerate(project_list))
+    print('Available spiders include:')
+    for i in range(len(projects)):
+        print('\n{} - {}'.format(projects[i][0], projects[i][1]))
+        project_spiders = [spider for spider in spiders_list if projects[i][1] in str(spider)]
+        project_spiders = list(zip(alphabet_list(len(project_spiders)), project_spiders))
+        for spider in project_spiders:
+            print('\t{}{} - {}'.format(projects[i][0], spider[0], spider[1].name))
+    print('\n{} - back'.format(len(projects)))
+    selection = input('\nfor multiple, comma separate. to remove, use "-" prefix\n')
+    if selection == str(len(projects)):
+        return False
+    return spiders_list

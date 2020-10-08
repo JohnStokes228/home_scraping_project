@@ -10,9 +10,9 @@ TODO - add new options: consolidate_data
      - add new option: print_pizza_time for nostalgia's sake
 """
 from HousingPriceScraper.HousingPriceScraper.functions.menus import basic_menu
-from HousingPriceScraper.HousingPriceScraper.processes.run_scrapers import run_scrapers
+from HousingPriceScraper.HousingPriceScraper.processes.run_scrapers import scrape_menu
 
 
 if __name__ == '__main__':
-    options_dict = {'run_scrape': run_scrapers}
+    options_dict = {'scraping_main': scrape_menu}
     basic_menu(options_dict)

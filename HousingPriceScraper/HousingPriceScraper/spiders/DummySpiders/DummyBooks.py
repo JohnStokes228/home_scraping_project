@@ -6,26 +6,16 @@ TODO - write method to test css
      - determine if its possible to interact for instance with pagination buttons without use of a driver.
 """
 from HousingPriceScraper.HousingPriceScraper.spiders.AncestorSpider.Exoskeleton import AncestorSpider
-from HousingPriceScraper.HousingPriceScraper.functions.data_management import date_today
+from HousingPriceScraper.HousingPriceScraper.functions.data_management import save_dict_to_json
 
 
-class DummyBooksSpider(AncestorSpider):
-
-    name = 'dummy-books'
-    input_urls = ['http://books.toscrape.com/']
-    data_path = 'data/raw_data/dummy_data/{}/{}'.format(name, date_today())
+class DummyBooksBaseSpider(AncestorSpider):
 
     def parse(self, response):
 
-        elements = [('name', '//h3/a', 'title'),
-                    ('price', '//div/p[@class="price_color"]', 'text'),
-                    ('url', '//h3/a', 'href')]
-        test = self.scrape_multiple_to_attribute(response, elements)
-
-        elements2 = [['name', 'a', 1, 'title'],
-                     ['price', 'p', 0, 'text', {'class': 'price_color'}],
-                     ['url', 'a', 1, 'href']]
-        test2 = self.scrape_product_box(response, '//article', elements2)
-
-        print(test)
-        print(test2)
+        elements = [['name', 'a', 1, 'title'],
+                    ['price', 'p', 0, 'text', {'class': 'price_color'}],
+                    ['url', 'a', 1, 'href']]
+        test = self.scrape_product_box(response, '//article', elements)
+        test['page_order'] = list(range(len(test['name'])))
+        save_dict_to_json(test, self.data_path, self.name)

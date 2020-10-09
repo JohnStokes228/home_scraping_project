@@ -1,14 +1,14 @@
 """
 file containing code to run spiders, called from main.py if run_scrape is selected.
 
-TODO - write method to get list of spiders: basically done, though there'll need to be some further work here to filter
-       it all down once we know the extent of what isn't a spider in this project
-     - incorporate the menus to allow user to manually reduce the list of spiders.
+TODO - incorporate the menus to allow user to manually reduce the list of spiders - in progress, see menus.py
      - add menu to allow user to specify configuration of input urls
+     - **add menu to allow user to pick which spiders are visible in the run_scrapers menu**
      - write multiprocessing implementation - crochet/pathos worked before but is there a more elegant solution?
-     - !!import spider settings for use in crawler process!!
+     - !!import spider settings for use in crawler process!! <- legit this one is probs a major deal rn :O
 """
 import inspect
+import os
 from scrapy.crawler import CrawlerProcess
 from HousingPriceScraper.HousingPriceScraper.functions.menus import end_process, basic_menu, select_spiders
 from HousingPriceScraper.HousingPriceScraper.spiders.SpiderGroups.dummy_spiders import *
@@ -56,8 +56,9 @@ def run_scrapers():
     :return: will either run the scrapers, or will allow user to paginate back to main menu.
     """
     spiders_lst = [obj for obj in globals().values() if inspect.isclass(obj) and str(obj).split('.')[2] == 'spiders' and 'BaseSpider' not in str(obj)]
-    spiders_lst = select_spiders(spiders_lst, ['dummy_spiders'])
-    if spiders_lst == False:
+    spiders_dict = {i.split('.')[0]: [obj for obj in spiders_lst if i.split('.')[0] in str(obj)] for i in os.listdir('spiders/SpiderGroups')[:-1]}
+    spiders_lst = select_spiders(spiders_dict)
+    if not spiders_lst:
         return True
     else:
         simultaneous_run(spiders_lst)

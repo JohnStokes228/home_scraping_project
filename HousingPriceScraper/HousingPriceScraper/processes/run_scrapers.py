@@ -10,7 +10,8 @@ TODO - incorporate the menus to allow user to manually reduce the list of spider
 import inspect
 import os
 from scrapy.crawler import CrawlerProcess
-from HousingPriceScraper.HousingPriceScraper.functions.menus import end_process, basic_menu, select_spiders
+from HousingPriceScraper.HousingPriceScraper.functions.basic_functions import end_process
+from HousingPriceScraper.HousingPriceScraper.functions.menus import basic_menu, select_spiders
 from HousingPriceScraper.HousingPriceScraper.spiders.SpiderGroups.dummy_spiders import *
 
 

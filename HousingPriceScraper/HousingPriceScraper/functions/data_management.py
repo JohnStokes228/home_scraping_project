@@ -8,9 +8,9 @@ TODO - will eventually need to write a suite of functions to interact with data 
      -
 """
 from pathlib import Path
-from datetime import date, datetime
 import json
 import itertools
+from HousingPriceScraper.HousingPriceScraper.functions.basic_functions import date_today, current_time
 
 
 def check_make_dir(folder):
@@ -22,26 +22,6 @@ def check_make_dir(folder):
     """
     Path('{}'.format(folder)).mkdir(parents=True, exist_ok=True)
     print('directory ready at {}'.format(folder))
-
-
-def date_today():
-    """
-    gets todays date in form ddmmyyyy. used in spider to make directory with specific name
-
-    :return: string format date
-    """
-    today = date.today().strftime('%d%m%Y')
-    return today
-
-
-def current_time():
-    """
-    gets the current time in form hhmmss. used to identify individual jsons in the data files.
-
-    :return: string format time
-    """
-    now = datetime.now().time().strftime('%H%M%S')
-    return now
 
 
 def save_dict_to_json(data_dict, file_path, file_name, date_vars=True):

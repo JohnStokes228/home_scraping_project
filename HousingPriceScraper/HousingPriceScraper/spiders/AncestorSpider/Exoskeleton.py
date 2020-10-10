@@ -3,10 +3,8 @@ ancestor spider is the highest generation of spider involved. will contain all b
 all the descendant spiders.
 the spiders exoskeleton wraps the set of gooey interior functions into a single class
 
-TODO - build parse method such that it allows tactility in number of sub functions scrapers iterate through
-     - build start requests method such that it is easy to call with minimal effort
-     - most likely need to study the existing builds here online
-     - have a set of custom settings all spiders have by default
+TODO - rewrite start_requests so it can know which function to send requests too based on some attribute
+     - **have a set of custom settings all spiders have by default**
      - consider building a second ancestor for 'item level' scrapes. a nana to every grandpa
 """
 import scrapy

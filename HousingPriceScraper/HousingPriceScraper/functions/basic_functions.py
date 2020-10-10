@@ -29,8 +29,6 @@ def current_time():
     return now
 
 
-
-
 def end_process():
     """
     function to correctly end the python process
@@ -92,4 +90,3 @@ def flatten_list_of_lists(list_of_lists, make_set=False):
     if make_set:
         flat_list = list(set(flat_list))
     return flat_list
-

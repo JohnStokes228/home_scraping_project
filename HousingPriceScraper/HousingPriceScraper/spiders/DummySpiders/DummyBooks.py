@@ -4,6 +4,7 @@ live site.
 
 TODO - write method to test css
      - determine if its possible to interact for instance with pagination buttons without use of a driver.
+     - books will instead produce its url hit list via pattern from url
 """
 from HousingPriceScraper.HousingPriceScraper.spiders.AncestorSpider.Exoskeleton import AncestorSpider
 from HousingPriceScraper.HousingPriceScraper.functions.data_management import save_dict_to_json

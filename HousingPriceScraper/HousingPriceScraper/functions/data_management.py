@@ -5,7 +5,6 @@ TODO - will eventually need to write a suite of functions to interact with data 
      - I wonder if these should be another class for the spiders to inherit? i.e. scraped_data_handler
        so it'd all be self. methods rather than function calls...?
      - its possible the column blower upperer might want to run after the read in rather than before.
-     -
 """
 from pathlib import Path
 import json
@@ -60,3 +59,28 @@ def expand_list_variable(data_dict, list_variable, delete_old_var=True):
     if delete_old_var:
         del data_dict[list_variable]
     return data_dict
+
+
+def save_list_to_txt(list_of_vals, file_loc):
+    """
+    function to save python list to comma separated txt file for storage
+
+    :param list_of_vals: python list
+    :param file_loc: location and name of file
+    :return: saves file to file_loc
+    """
+    with open(file_loc, 'w') as f:
+        for element in list_of_vals:
+            f.write("{}\n".format(element))
+
+
+def read_txt_to_list(file_loc):
+    """
+    read .txt file in and return as list
+
+    :param file_loc: location of txt file
+    :return: list of file content
+    """
+    file = open(file_loc, 'r')
+    lines = file.readlines()
+    return lines

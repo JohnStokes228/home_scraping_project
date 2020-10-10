@@ -3,14 +3,14 @@ contains generic code for use in main menus. currently this is a function which 
 into a menu. I envision any further menu functions being stored here so don't expect it to run like a pipeline but
 rather like a suite of individual menus.
 
-TODO - it may be that some of these functions end up elsewhere as I can see end_process being useful...
-     - I'm thinking an additional python file for generic functions such as the ones found at the top
-       of this file
-     - !!refactor select spiders into more legible code!!
+TODO - **refactor select spiders into more legible code**
+     - write menu to update the visible spider projects.
 """
 import re
+import os
 from HousingPriceScraper.HousingPriceScraper.functions.basic_functions import return_false, end_process, \
     alphabet_list_length, flatten_list_of_lists
+from HousingPriceScraper.HousingPriceScraper.functions.data_management import save_list_to_txt
 
 
 def final_option(dict_of_options, back):
@@ -71,8 +71,8 @@ def select_spiders(spiders_dict):
         for spider in zip(alphabet_list_length(len(key_group[1])), spiders_dict[key_group[1]]):
             print('\t{}{} - {}'.format(key_group[0], spider[0], spider[1].name))
     print('{} - run all'.format(len(spiders_dict.keys())))
-    print('{} - back\n'.format(len(spiders_dict.keys())+1))
-    choices = input('\nfor multiple, comma separate. to remove, use "-" prefix\n')
+    print('{} - back'.format(len(spiders_dict.keys())+1))
+    choices = input('\nfor multiple, comma separate. To remove, use "-" prefix\ni.e.: 0,-0a to run all of group 0 except the first\n')
     choices = choices.split(',')
     if str(len(spiders_dict.keys())+1) in choices:
         return False
@@ -84,6 +84,8 @@ def select_spiders(spiders_dict):
             if choice.isdigit():
                 if choice in [str(i[0]) for i in enumerated_keys]:
                     chosen_spiders.append(spiders_dict[enumerated_keys[int(choice)][1]])
+                else:
+                    print('{} is not an option!'.format(choice))
             elif '-' not in choice:
                 numeric = re.findall(r'\d+', choice)
                 if len(numeric) == 1:
@@ -93,6 +95,8 @@ def select_spiders(spiders_dict):
                         chosen_spiders.append(spiders_dict[enumerated_keys[int(numeric[0])][1]][alpha])
                     except IndexError:
                         print('{} is not an option!'.format(choice))
+                else:
+                    print('{} is not an option!'.format(choice))
     chosen_spiders = flatten_list_of_lists(chosen_spiders, make_set=True)
     to_remove = [choice for choice in choices if '-' in choice]
     if len(to_remove) > 0:
@@ -101,6 +105,8 @@ def select_spiders(spiders_dict):
                 if removee.replace('-', '') in [str(i[0]) for i in enumerated_keys]:
                     for spider in spiders_dict[enumerated_keys[int(removee.replace('-', ''))][1]]:
                         chosen_spiders.remove(spider)
+                else:
+                    print('{} is not an option!'.format(removee))
             else:
                 numeric = re.findall(r'\d+', removee)
                 if len(numeric) == 1:
@@ -109,9 +115,35 @@ def select_spiders(spiders_dict):
                     try:
                         chosen_spiders.remove(spiders_dict[enumerated_keys[int(numeric[0])][1]][alpha])
                     except IndexError:
-                        print('{} is not an option'.format(removee))
+                        print('{} is not an option!'.format(removee))
+                else:
+                    print('{} is not an option!'.format(removee))
     if len(chosen_spiders) > 0:
         return chosen_spiders
     else:
         print("You haven't selected any spiders!")
         return False
+
+
+def project_visibility_menu():
+    """
+    creates menu to allow user to set which project groups are visible in the run_scrapers menu
+
+    :return: creates a txt file containing the list of desired project names, one per row.
+    """
+    projects = [i.split('.')[0] for i in os.listdir('spiders/SpiderGroups')[:-1]]
+    print('Available projects are:\n')
+    for project in enumerate(projects):
+        print('\t{} - {}'.format(project[0], project[1]))
+    print('\t{} - back'.format(len(projects)+1))
+    choices = input('\nType the options you wish to select.\nFor multiple, comma separate\n\n').split(',')
+    if str(len(projects)+1) in choices:
+        return True
+    else:
+        choice_list = []
+        for choice in choices:
+            if choice.isdigit() and int(choice) in range(len(projects)):
+                choice_list.append(projects[int(choice)])
+        print('You have selected to display the following spider groupings:\n\t{}\n'.format(choice_list))
+        save_list_to_txt(choice_list, 'configs/visible_projects_to_scrape.txt')
+        return True

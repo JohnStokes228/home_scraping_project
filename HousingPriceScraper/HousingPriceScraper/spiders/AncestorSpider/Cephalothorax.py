@@ -1,8 +1,7 @@
 """
 the gooey interior of the spider, containing the scraping methods. html parsing is currently handled by beautiful soup.
 
-TODO - write a function that saves data
-     - investigate selenium: might be worth having another class for driver usage if its going to be needed?
+TODO - investigate selenium: might be worth having another class for driver usage if its going to be needed?
      - element_to_attribute may need further updates as the find() method might be a bit ambiguous, we'll have to see
        how it behaves in practice
      - its likely that non identically structured websites may break a few of these methods we'll have to see as we
@@ -64,6 +63,23 @@ class SpiderMethods:
         attribute_list = self.element_to_attribute(element_list, attribute)
         return attribute_list
 
+    def scrape_table_to_dict(self, response, var_col, var_attr, val_col, val_attr, xpath=True):
+        """
+        function to scrape a table of data into a dictionary
+
+        :param response: scrapy response object
+        :param var_col: column of table containing variable names
+        :param var_attr: attribute for var_col path
+        :param val_col: column of table containing variable realisations
+        :param val_attr: value attribute
+        :param xpath: boolean indicating if var_col and att_col are given by xpath or css selector
+        :return: dictionary with keys = var_col and values = att_col
+        """
+        var_names = self.scrape_to_attribute(response, var_col, var_attr, xpath)
+        vals = self.scrape_to_attribute(response, val_col, val_attr, xpath)
+        table_dict = {var_names[i]: [vals[i]] for i in range(len(var_names))}
+        return table_dict
+
     def scrape_multiple_to_attribute(self, response, list_of_tuples):
         """
         function that will scrape a list of tuples using the scrape_to_attribute function
@@ -85,7 +101,7 @@ class SpiderMethods:
 
         :param response: scrapy response object - the url of the site
         :param product_path: xpath or css selector pointing to the product cell
-        :param attribute_tuples_list: list of lists of form (var_name, node, node_index, attribute, condition (optional))
+        :param attribute_lists_list: list of lists of form (var_name, node, node_index, attribute, condition (optional))
                condition must be a dictionary of form {attribute: attribute_value}
         :param xpath: boolean indicating if product_path is using xpath or css
         :return: dictionary of chosen attributes, whose keys are the var_names from attribute_tuples_list

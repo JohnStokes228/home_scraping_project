@@ -72,8 +72,7 @@ def select_spiders(spiders_dict):
             print('\t{}{} - {}'.format(key_group[0], spider[0], spider[1].name))
     print('{} - run all'.format(len(spiders_dict.keys())))
     print('{} - back'.format(len(spiders_dict.keys())+1))
-    choices = input('\nfor multiple, comma separate. To remove, use "-" prefix\ni.e.: 0,-0a to run all of group 0 except the first\n')
-    choices = choices.split(',')
+    choices = input('\nfor multiple, comma separate. To remove, use "-" prefix\ni.e.: 0,-0a to run all of group 0 except the first\n').replace(' ', '').split(',')
     if str(len(spiders_dict.keys())+1) in choices:
         return False
     if str(len(spiders_dict.keys())) in choices:
@@ -97,7 +96,10 @@ def select_spiders(spiders_dict):
                         print('{} is not an option!'.format(choice))
                 else:
                     print('{} is not an option!'.format(choice))
-    chosen_spiders = flatten_list_of_lists(chosen_spiders, make_set=True)
+    if any(isinstance(el, list) for el in chosen_spiders):
+        chosen_spiders = flatten_list_of_lists(chosen_spiders, make_set=True)
+    else:
+        chosen_spiders = list(set(chosen_spiders))
     to_remove = [choice for choice in choices if '-' in choice]
     if len(to_remove) > 0:
         for removee in to_remove:

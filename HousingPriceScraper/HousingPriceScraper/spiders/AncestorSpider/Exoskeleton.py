@@ -27,14 +27,11 @@ class AncestorSpider(scrapy.Spider, SpiderMethods):
         """
         check_make_dir(folder=self.data_path)
         for url in self.input_urls:
-            yield scrapy.Request(url=url, callback=self.parse)
-
-    def parse(self, response):
-        """
-        dummy func to be overwritten in actual spiders. this function will dictate what to do once arriving at the
-        response url.
-
-        :param response: scrapy response object - a request url
-        :return: scrape target url. if told to save then hopefully it'll do just that ey ;)
-        """
-        pass
+            if hasattr(self, 'traverse_site'):
+                yield scrapy.Request(url=url, callback=self.traverse_site)
+            elif hasattr(self, 'get_items'):
+                yield scrapy.Request(url=url, callback=self.get_items)
+            elif hasattr(self, 'get_attributes'):
+                yield scrapy.Request(url=url, callback=self.get_attributes)
+            else:
+                print('spider {} has no valid methods of scraping!'.format(self.name))

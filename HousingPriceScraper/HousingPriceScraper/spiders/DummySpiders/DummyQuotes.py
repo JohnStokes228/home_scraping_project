@@ -11,7 +11,7 @@ from HousingPriceScraper.HousingPriceScraper.functions.data_management import sa
 
 class DummyQuotesBaseSpider(AncestorSpider):
 
-    def parse(self, response):
+    def get_items(self, response):
 
         elements = [("quote", "//div/span[@class='text']", "text"),
                     ("author", "//div/span/small", "text"),

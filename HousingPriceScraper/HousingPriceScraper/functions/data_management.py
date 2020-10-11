@@ -9,6 +9,7 @@ TODO - will eventually need to write a suite of functions to interact with data 
 from pathlib import Path
 import json
 import itertools
+import time
 from HousingPriceScraper.HousingPriceScraper.functions.basic_functions import date_today, current_time
 
 
@@ -23,7 +24,7 @@ def check_make_dir(folder):
     print('directory ready at {}'.format(folder))
 
 
-def save_dict_to_json(data_dict, file_path, file_name, date_vars=True):
+def save_dict_to_json(data_dict, file_path, file_name, date_vars=True, attrs=False):
     """
     you'll never guess what this function does :O
 
@@ -31,12 +32,17 @@ def save_dict_to_json(data_dict, file_path, file_name, date_vars=True):
     :param file_path: path to the output file
     :param file_name: the name given to the output file, will typically be spider name in this project
     :param date_vars: binary indicating whether to add variables for date and time of scrape
+    :param attrs: boolean dictating if data is at attribute or shelf level
     :return: saves the input dictionary to a json file named with structure
     """
+    time.sleep(1)
     if date_vars:
         data_dict['date_scraped'] = [date_today()] * len(data_dict[list(data_dict.keys())[0]])
         data_dict['time_scraped'] = [current_time()] * len(data_dict[list(data_dict.keys())[0]])
-    file_name = '{}_{}_{}.json'.format(date_today(), current_time(), file_name)
+    if not attrs:
+        file_name = '{}_{}_{}.json'.format(date_today(), current_time(), file_name)
+    else:
+        file_name = '{}_{}_attrs_{}.json'.format(date_today(), current_time(), file_name)
     with open('{}/{}'.format(file_path, file_name), 'w') as fp:
         json.dump(data_dict, fp, sort_keys=True, indent=4)
     print('data saved to file:\n\t{}'.format(file_name))

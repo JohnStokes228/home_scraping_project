@@ -25,6 +25,16 @@ def set_config():
     return True
 
 
+def refresh_item_urls():
+    """
+    function to refresh item urls for all? or maybe just specified spiders in a variety of ways
+
+    :return:
+    """
+    print('feature not yet available')
+    return True
+
+
 def simultaneous_run(list_of_spiders):
     """
     function for simultaneous running of multiple spiders.
@@ -69,6 +79,7 @@ def scrape_menu():
     :return: takes you through the scraping menu with the #bois
     """
     options_dict = {'run_scrape': run_scrapers,
+                    'refresh_item_urls': refresh_item_urls,
                     'set_config': set_config,
                     'choose_visible_projects': project_visibility_menu}
     basic_menu(options_dict, back=True)

@@ -8,6 +8,7 @@ TODO - rewrite start_requests so it can know which function to send requests too
      - consider building a second ancestor for 'item level' scrapes. a nana to every grandpa
 """
 import scrapy
+import json
 from HousingPriceScraper.HousingPriceScraper.functions.data_management import check_make_dir, date_today
 from HousingPriceScraper.HousingPriceScraper.spiders.AncestorSpider.Cephalothorax import SpiderMethods
 
@@ -15,7 +16,6 @@ from HousingPriceScraper.HousingPriceScraper.spiders.AncestorSpider.Cephalothora
 class AncestorSpider(scrapy.Spider, SpiderMethods):
 
     name = None
-    input_urls = []
     custom_settings = {}
     data_path = 'data/raw_data/{}/{}'.format(name, date_today())
 
@@ -26,7 +26,10 @@ class AncestorSpider(scrapy.Spider, SpiderMethods):
         :return: request object(object?) which calls the parse method
         """
         check_make_dir(folder=self.data_path)
-        for url in self.input_urls:
+        with open('configs/chosen_urls.json') as input_urls_json:
+            urls_dict = json.load(input_urls_json)
+        input_urls = urls_dict[self.name]
+        for url in input_urls:
             if hasattr(self, 'traverse_site'):
                 yield scrapy.Request(url=url, callback=self.traverse_site)
             elif hasattr(self, 'get_items'):

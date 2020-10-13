@@ -1,0 +1,2 @@
+defaults: the default urls for all spiders. will be taken if none selected
+dummy: test config

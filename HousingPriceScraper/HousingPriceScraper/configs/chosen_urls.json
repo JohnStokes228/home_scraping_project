@@ -1,0 +1,15 @@
+{
+    "dummy-books": [
+        "http://books.toscrape.com/"
+    ],
+    "dummy-books-attributes": [
+        "http://books.toscrape.com/catalogue/soumission_998/index.html",
+        "http://books.toscrape.com/catalogue/our-band-could-be-your-life-scenes-from-the-american-indie-underground-1981-1991_985/index.html"
+    ],
+    "dummy-books-combi": [
+        "http://books.toscrape.com/"
+    ],
+    "dummy-quotes": [
+        "http://quotes.toscrape.com/"
+    ]
+}

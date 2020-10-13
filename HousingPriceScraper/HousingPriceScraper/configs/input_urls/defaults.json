@@ -1,0 +1,6 @@
+{
+  "dummy-books": ["http://books.toscrape.com/"],
+  "dummy-books-attributes": ["http://books.toscrape.com/catalogue/a-light-in-the-attic_1000/index.html"],
+  "dummy-books-combi": ["http://books.toscrape.com/"],
+  "dummy-quotes": ["http://quotes.toscrape.com/"]
+}

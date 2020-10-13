@@ -10,19 +10,9 @@ import inspect
 import os
 from scrapy.crawler import CrawlerProcess
 from HousingPriceScraper.HousingPriceScraper.functions.basic_functions import end_process
-from HousingPriceScraper.HousingPriceScraper.functions.menus import basic_menu, select_spiders, project_visibility_menu
+from HousingPriceScraper.HousingPriceScraper.functions.menus import basic_menu, select_spiders, project_visibility_menu, set_config
 from HousingPriceScraper.HousingPriceScraper.functions.data_management import read_txt_to_list
 from HousingPriceScraper.HousingPriceScraper.spiders.SpiderGroups.dummy_spiders import *
-
-
-def set_config():
-    """
-    function to select which config file to utilise during the next scrape, else default to 'default' config
-
-    :return:
-    """
-    print('feature not yet available')
-    return True
 
 
 def refresh_item_urls():

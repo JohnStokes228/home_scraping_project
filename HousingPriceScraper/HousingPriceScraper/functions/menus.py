@@ -3,11 +3,12 @@ contains generic code for use in main menus. currently this is a function which 
 into a menu. I envision any further menu functions being stored here so don't expect it to run like a pipeline but
 rather like a suite of individual menus.
 
-TODO - **refactor select spiders into more legible code**
-     - write menu to update the visible spider projects.
+TODO 
 """
 import re
 import os
+import json
+from collections import defaultdict
 from HousingPriceScraper.HousingPriceScraper.functions.basic_functions import return_false, end_process, \
     alphabet_list_length, flatten_list_of_lists
 from HousingPriceScraper.HousingPriceScraper.functions.data_management import save_list_to_txt
@@ -149,3 +150,44 @@ def project_visibility_menu():
         print('You have selected to display the following spider groupings:\n\t{}\n'.format(choice_list))
         save_list_to_txt(choice_list, 'configs/visible_projects_to_scrape.txt')
         return True
+
+
+def set_config():
+    """
+    menu to set the url configs.
+
+    :return: will set the start_urls of the spiders.
+    """
+    available_configs = open('configs/input_url_config_descriptions.txt', 'r')
+    options = available_configs.readlines()
+    options_dict = {}
+    print('available configs include:\n')
+    for option in enumerate(options):
+        options_dict[option[0]] = option[1].split(':')[0]
+        print('{} - {}'.format(option[0], option[1]))
+    print('{} - back'.format(len(options)))
+    chosen = input('comma separate for multiple\n').split(',')
+    if (str(len(options)) in chosen) or (len(chosen) == 0):
+        return True
+    configs = []
+    for choice in chosen:
+        if int(choice) in options_dict:
+            with open('configs/input_urls/{}.json'.format(options_dict[int(choice)])) as f:
+                configs.append(json.load(f))
+    final_config = defaultdict(list)
+    for config in configs:
+        for key, value in config.items():
+            final_config[key].append(value)
+        for key, value in final_config.items():
+            if any(isinstance(val, list) for val in value):
+                final_config[key] = flatten_list_of_lists(value, make_set=True)
+    with open('configs/input_urls/defaults.json') as default_urls_json:
+        default_dict = json.load(default_urls_json)
+    for key, value in default_dict.items():
+        if key not in final_config.keys():
+            final_config[key] = value
+    with open('configs/chosen_urls.json', 'w') as fp:
+        json.dump(final_config, fp, sort_keys=True, indent=4)
+    return True
+
+

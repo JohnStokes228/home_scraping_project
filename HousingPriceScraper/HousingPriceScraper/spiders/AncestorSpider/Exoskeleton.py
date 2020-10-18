@@ -10,7 +10,7 @@ TODO - rewrite start_requests so it can know which function to send requests too
 import scrapy
 import json
 from HousingPriceScraper.HousingPriceScraper.functions.data_management import check_make_dir, date_today
-from HousingPriceScraper.HousingPriceScraper.spiders.AncestorSpider.Cephalothorax import SpiderMethods
+from HousingPriceScraper.HousingPriceScraper.spiders.AncestorSpider.abdomen import SpiderMethods
 
 
 class AncestorSpider(scrapy.Spider, SpiderMethods):
@@ -38,3 +38,4 @@ class AncestorSpider(scrapy.Spider, SpiderMethods):
                 yield scrapy.Request(url=url, callback=self.get_attributes)
             else:
                 print('spider {} has no valid methods of scraping!'.format(self.name))
+

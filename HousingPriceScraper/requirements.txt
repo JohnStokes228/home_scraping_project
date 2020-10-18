@@ -1,3 +1,4 @@
 twisted==20.3.0
 scrapy==2.3.0
 beautifulsoup4==4.9.1
+selenium==3.141.0

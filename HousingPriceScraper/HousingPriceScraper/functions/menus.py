@@ -3,7 +3,7 @@ contains generic code for use in main menus. currently this is a function which 
 into a menu. I envision any further menu functions being stored here so don't expect it to run like a pipeline but
 rather like a suite of individual menus.
 
-TODO 
+TODO
 """
 import re
 import os
@@ -138,9 +138,9 @@ def project_visibility_menu():
     print('Available projects are:\n')
     for project in enumerate(projects):
         print('\t{} - {}'.format(project[0], project[1]))
-    print('\t{} - back'.format(len(projects)+1))
+    print('\t{} - back'.format(len(projects)))
     choices = input('\nType the options you wish to select.\nFor multiple, comma separate\n\n').split(',')
-    if str(len(projects)+1) in choices:
+    if str(len(projects)) in choices:
         return True
     else:
         choice_list = []
@@ -164,9 +164,9 @@ def set_config():
     print('available configs include:\n')
     for option in enumerate(options):
         options_dict[option[0]] = option[1].split(':')[0]
-        print('{} - {}'.format(option[0], option[1]))
-    print('{} - back'.format(len(options)))
-    chosen = input('comma separate for multiple\n').split(',')
+        print('\t{} - {}'.format(option[0], option[1].replace('\n', '')))
+    print('\t{} - back'.format(len(options)))
+    chosen = input('\ncomma separate for multiple\n').split(',')
     if (str(len(options)) in chosen) or (len(chosen) == 0):
         return True
     configs = []
@@ -189,5 +189,3 @@ def set_config():
     with open('configs/chosen_urls.json', 'w') as fp:
         json.dump(final_config, fp, sort_keys=True, indent=4)
     return True
-
-

@@ -13,7 +13,7 @@ group_path = 'data/raw_data/dummy_data/'
 
 class DummyBooks(DummyBooksBaseSpider):
 
-    name = 'dummy-books'
+    name = 'dummy-books-items'
     data_path = '{}/{}/{}'.format(group_path, name, date_today())
 
 
@@ -31,5 +31,5 @@ class DummyBooksCombiSpider(DummyBooksBaseSpider, DummyBookAttrSpider):
 
 class DummyQuotes(DummyQuotesBaseSpider):
 
-    name = 'dummy-quotes'
+    name = 'dummy-quotes-items'
     data_path = '{}/{}/{}'.format(group_path, name, date_today())

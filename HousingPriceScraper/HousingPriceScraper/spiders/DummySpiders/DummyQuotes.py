@@ -20,6 +20,7 @@ class DummyQuotesBaseSpider(PerceptiveAncestorSpider):
                     ("author", "//div/span/small", "text"),
                     ("tags", "//div/meta", "content")]
         test = self.scrape_multiple_to_attribute(response, elements)
+        self.driver_get_element("//div/span[@class='text']")
         test['page_order'] = list(range(len(test['quote'])))
         test = expand_list_variable(test, 'tags', delete_old_var=False)
         save_dict_to_json(test, self.data_path, self.name)

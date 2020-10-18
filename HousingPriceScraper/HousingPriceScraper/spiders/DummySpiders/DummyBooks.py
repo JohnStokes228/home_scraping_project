@@ -26,6 +26,7 @@ class DummyBooksBaseSpider(AncestorSpider):
                     ['url', 'a', 1, 'href']]
         test = self.scrape_product_box(response, '//article', elements)
         test['page_order'] = list(range(len(test['name'])))
+        self.update_recent_urls(['http://books.toscrape.com/catalogue/{}'.format(url) for url in test['url']])
         save_dict_to_json(test, self.data_path, self.name)
         if hasattr(self, 'get_attributes'):
             for url in test['url']:

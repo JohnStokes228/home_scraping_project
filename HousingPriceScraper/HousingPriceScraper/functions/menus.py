@@ -3,14 +3,15 @@ contains generic code for use in main menus. currently this is a function which 
 into a menu. I envision any further menu functions being stored here so don't expect it to run like a pipeline but
 rather like a suite of individual menus.
 
-TODO
+TODO - refactor spider selection function as jesus christ that things fat
+     - incorporate spider selector in config manager options
 """
 import re
 import os
 import json
 from collections import defaultdict
 from HousingPriceScraper.HousingPriceScraper.functions.basic_functions import return_false, end_process, \
-    alphabet_list_length, flatten_list_of_lists
+    alphabet_list_length, flatten_list_of_lists, print_pizza_time
 from HousingPriceScraper.HousingPriceScraper.functions.data_management import save_list_to_txt
 
 
@@ -167,7 +168,7 @@ def set_config():
         print('\t{} - {}'.format(option[0], option[1].replace('\n', '')))
     print('\t{} - back'.format(len(options)))
     chosen = input('\ncomma separate for multiple\n').split(',')
-    if (str(len(options)) in chosen) or (len(chosen) == 0):
+    if (str(len(options)) in chosen) or (chosen == ['']):
         return True
     configs = []
     for choice in chosen:
@@ -177,7 +178,10 @@ def set_config():
     final_config = defaultdict(list)
     for config in configs:
         for key, value in config.items():
-            final_config[key].append(value)
+            if key in final_config:
+                final_config[key] += value
+            else:
+                final_config[key] = value
         for key, value in final_config.items():
             if any(isinstance(val, list) for val in value):
                 final_config[key] = flatten_list_of_lists(value, make_set=True)
@@ -188,4 +192,65 @@ def set_config():
             final_config[key] = value
     with open('configs/chosen_urls.json', 'w') as fp:
         json.dump(final_config, fp, sort_keys=True, indent=4)
+    return True
+
+
+def append_recent_urls():
+    """
+    function for appending recent scraped urls to default urls json
+
+    :return: default.json is updated
+    """
+    pass
+
+
+def replace_default_urls():
+    """
+    function for replacing default urls config with recent scrapes
+
+    :return: defaults.json is updated
+    """
+    pass
+
+
+def create_new_config():
+    """
+    function which creates a whole new config file to store recent scraped urls in
+
+    :return: new config is created
+    """
+    with open('configs/input_urls/recent_urls.json') as recent_urls_json:
+        urls_dict = json.load(recent_urls_json)
+    config_name = input('Type a name for the new config file:\n').replace(' ', '_').replace(':', '')
+    config_desc = input('Type a brief description for the new config file:\n')
+    with open('configs/input_urls/{}.json'.format(config_name), 'w') as fp:
+        json.dump(urls_dict, fp, sort_keys=True, indent=4)
+    with open('configs/input_url_config_descriptions.txt', 'a') as input_descs:
+        input_descs.write('\n{}: {}'.format(config_name, config_desc))
+    print('\nSuccessfully saved recently scraped urls to new config: {}.json'.format(config_name))
+
+
+def clear_recent_urls():
+    """
+    function which bleaches the recent urls config in order to start fresh next time
+
+    :return: recent_urls will become an empty dictionary.
+    """
+    pass
+
+
+def config_manager():
+    """
+    function to refresh item urls for all? or maybe just specified spiders in a variety of ways
+
+    :return:
+    """
+
+    options = {'set config options for next scrape': set_config,
+                'append recent urls to default config': print_pizza_time,
+               'overwrite default config with recent urls': print_pizza_time,
+               'create new config option to store recent urls': create_new_config,
+               'clear recent urls config': print_pizza_time
+               }
+    basic_menu(options, back=True)
     return True

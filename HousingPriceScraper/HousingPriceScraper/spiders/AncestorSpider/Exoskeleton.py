@@ -38,4 +38,3 @@ class AncestorSpider(scrapy.Spider, SpiderMethods):
                 yield scrapy.Request(url=url, callback=self.get_attributes)
             else:
                 print('spider {} has no valid methods of scraping!'.format(self.name))
-

@@ -9,6 +9,15 @@ import itertools
 from datetime import date, datetime
 
 
+def print_pizza_time():
+    """
+    function prints the words 'pizza time!' to trace.
+
+    :return: pizza time!
+    """
+    print('pizza time!')
+
+
 def date_today():
     """
     gets todays date in form ddmmyyyy. used in spider to make directory with specific name

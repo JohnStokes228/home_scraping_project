@@ -1,28 +1,17 @@
 """
 file containing code to run spiders, called from main.py if run_scrape is selected.
 
-TODO - incorporate the menus to allow user to manually reduce the list of spiders - in progress, see menus.py
-     - **add menu to allow user to specify configuration of input urls**
-     - write multiprocessing implementation - crochet/pathos worked before but is there a more elegant solution?
+TODO - write multiprocessing implementation - crochet/pathos worked before but is there a more elegant solution?
      - !!import spider settings for use in crawler process!! <- legit this one is probs a major deal rn :O
+     - refactor set_config and manage_recent_urls into a single 'url_config_manager' option, with both options within
 """
 import inspect
 import os
 from scrapy.crawler import CrawlerProcess
 from HousingPriceScraper.HousingPriceScraper.functions.basic_functions import end_process
-from HousingPriceScraper.HousingPriceScraper.functions.menus import basic_menu, select_spiders, project_visibility_menu, set_config
+from HousingPriceScraper.HousingPriceScraper.functions.menus import basic_menu, select_spiders, project_visibility_menu, config_manager
 from HousingPriceScraper.HousingPriceScraper.functions.data_management import read_txt_to_list
 from HousingPriceScraper.HousingPriceScraper.spiders.SpiderGroups.dummy_spiders import *
-
-
-def refresh_item_urls():
-    """
-    function to refresh item urls for all? or maybe just specified spiders in a variety of ways
-
-    :return:
-    """
-    print('feature not yet available')
-    return True
 
 
 def simultaneous_run(list_of_spiders):
@@ -69,8 +58,7 @@ def scrape_menu():
     :return: takes you through the scraping menu with the #bois
     """
     options_dict = {'run_scrape': run_scrapers,
-                    'refresh_item_urls': refresh_item_urls,
-                    'set_config': set_config,
-                    'choose_visible_projects': project_visibility_menu}
+                    'choose_visible_projects': project_visibility_menu,
+                    'url_config_manager': config_manager}
     basic_menu(options_dict, back=True)
     return True

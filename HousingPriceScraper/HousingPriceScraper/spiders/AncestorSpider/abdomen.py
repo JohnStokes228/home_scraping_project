@@ -8,6 +8,7 @@ TODO - investigate selenium: might be worth having another class for driver usag
        get to them
 """
 import time
+import json
 from random import randint
 from bs4 import BeautifulSoup
 
@@ -119,3 +120,21 @@ class SpiderMethods:
                 else:
                     output_dict[attr_list[0]].append(soup.find_all(attr_list[1], attrs=attr_list[4])[attr_list[2]][attr_list[3]])
         return output_dict
+
+    def update_recent_urls(self, urls_list):
+        """
+        function to append the most recently discovered urls to recent_urls.json config
+
+        :param urls_list: a list of scraped attribute level urls
+        :return: updates /configs/input_urls/recent_urls.json
+        """
+        with open('configs/input_urls/recent_urls.json') as recent_urls_json:
+            recent_dict = json.load(recent_urls_json)
+        spider_name = '{}-attributes'.format(self.name.rsplit('-', 1)[0])
+        if spider_name in recent_dict:
+            recent_dict[spider_name] = list(set(recent_dict[spider_name] + urls_list))
+        else:
+            recent_dict[spider_name] = urls_list
+        with open('configs/input_urls/recent_urls.json', 'w') as fp:
+            json.dump(recent_dict, fp, sort_keys=True, indent=4)
+        print('recent_urls for {} updated'.format(self.name))

@@ -1,2 +1,3 @@
-defaults: the default urls for all spiders. will be taken if none selected
-dummy: test config
+defaults: The default urls for all spiders. Will populate spiders not covered by other configs
+recent_urls: The most recent attribute urls collected for each spider
+dummy: Test config, exists purely to play with

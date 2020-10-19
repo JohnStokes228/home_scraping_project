@@ -201,7 +201,14 @@ def append_recent_urls():
 
     :return: default.json is updated
     """
-    pass
+    with open('configs/input_urls/defaults.json') as default_urls_json:
+        default_dict = json.load(default_urls_json)
+    with open('configs/input_urls/recent_urls.json') as recent_urls_json:
+        recent_dict = json.load(recent_urls_json)
+    for key, value in recent_dict.items():
+        default_dict.setdefault(key, []).extend(value)
+    with open('configs/input_urls/defaults.json', 'w') as fp:
+        json.dump(default_dict, fp, sort_keys=True, indent=4)
 
 
 def replace_default_urls():
@@ -210,7 +217,14 @@ def replace_default_urls():
 
     :return: defaults.json is updated
     """
-    pass
+    with open('configs/input_urls/defaults.json') as default_urls_json:
+        default_dict = json.load(default_urls_json)
+    with open('configs/input_urls/recent_urls.json') as recent_urls_json:
+        recent_dict = json.load(recent_urls_json)
+    for key, value in recent_dict.items():
+        default_dict[key] = value
+    with open('configs/input_urls/defaults.json', 'w') as fp:
+        json.dump(default_dict, fp, sort_keys=True, indent=4)
 
 
 def create_new_config():
@@ -236,7 +250,12 @@ def clear_recent_urls():
 
     :return: recent_urls will become an empty dictionary.
     """
-    pass
+    with open('configs/input_urls/recent_urls.json') as recent_urls_json:
+        recent_dict = json.load(recent_urls_json)
+    for key in recent_dict.keys():
+        recent_dict[key] = []
+    with open('configs/input_urls/recent_urls.json', 'w') as fp:
+        json.dump(recent_dict, fp, sort_keys=True, indent=4)
 
 
 def config_manager():
@@ -246,11 +265,11 @@ def config_manager():
     :return:
     """
 
-    options = {'set config options for next scrape': set_config,
-                'append recent urls to default config': print_pizza_time,
-               'overwrite default config with recent urls': print_pizza_time,
-               'create new config option to store recent urls': create_new_config,
-               'clear recent urls config': print_pizza_time
+    options = {'set_configs': set_config,
+               'append_recent_to_default': append_recent_urls,
+               'overwrite_default': replace_default_urls,
+               'create_new_config': create_new_config,
+               'clear_recent_urls': clear_recent_urls
                }
     basic_menu(options, back=True)
     return True

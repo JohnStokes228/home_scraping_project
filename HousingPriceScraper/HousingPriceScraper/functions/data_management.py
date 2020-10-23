@@ -43,8 +43,8 @@ def save_dict_to_json(data_dict, file_path, file_name, date_vars=True, attrs=Fal
         file_name = '{}_{}_{}.json'.format(date_today(), current_time(), file_name)
     else:
         file_name = '{}_{}_attrs_{}.json'.format(date_today(), current_time(), file_name)
-    with open('{}/{}'.format(file_path, file_name), 'w') as fp:
-        json.dump(data_dict, fp, sort_keys=True, indent=4)
+    with open('{}/{}'.format(file_path, file_name), 'w', encoding='utf8') as fp:
+        json.dump(data_dict, fp, sort_keys=True, indent=4, ensure_ascii=False)
     print('data saved to file:\n\t{}'.format(file_name))
 
 

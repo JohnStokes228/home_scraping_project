@@ -27,7 +27,7 @@ class DummyBooksBaseSpider(AncestorSpider):
         test = self.scrape_product_box(response, '//article', elements)
         test['page_order'] = list(range(len(test['name'])))
         self.update_recent_urls(['http://books.toscrape.com/catalogue/{}'.format(url) for url in test['url']])
-        save_dict_to_json(test, self.data_path, self.name)
+        save_dict_to_json(test, self.data_path, self.name.rsplit('-', 1)[0])
         if hasattr(self, 'get_attributes'):
             for url in test['url']:
                 yield scrapy.Request(url='http://books.toscrape.com/catalogue/{}'.format(url), callback=self.get_attributes)
@@ -42,4 +42,4 @@ class DummyBookAttrSpider(AncestorSpider):
         test = self.scrape_multiple_to_attribute(response, elements)
         attrs = self.scrape_table_to_dict(response, '//th', 'text', '//td', 'text')
         test.update(attrs)
-        save_dict_to_json(test, self.data_path, format(self.name), attrs=True)
+        save_dict_to_json(test, self.data_path, self.name.rsplit('-', 1)[0], attrs=True)

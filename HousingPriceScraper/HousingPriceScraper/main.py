@@ -9,10 +9,13 @@ TODO - add new options: consolidate_data
      - add new option: get_log_summary
      - add new option: print_pizza_time for nostalgia's sake
 """
-from HousingPriceScraper.HousingPriceScraper.functions.menus import basic_menu
+from HousingPriceScraper.HousingPriceScraper.functions.menus import basic_menu, project_visibility_menu
 from HousingPriceScraper.HousingPriceScraper.processes.run_scrapers import scrape_menu
+from HousingPriceScraper.HousingPriceScraper.processes.coalate_data import data_management_menu
 
 
 if __name__ == '__main__':
-    options_dict = {'scraping_main': scrape_menu}
+    options_dict = {'set_visible_projects': project_visibility_menu,
+                    'scraping_main': scrape_menu,
+                    'data_management_main': data_management_menu}
     basic_menu(options_dict)

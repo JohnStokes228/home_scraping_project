@@ -9,9 +9,11 @@ TODO - refactor spider selection function as jesus christ that things fat
 import re
 import os
 import json
+from datetime import date, datetime
 from collections import defaultdict
+import pandas as pd
 from HousingPriceScraper.HousingPriceScraper.functions.basic_functions import return_false, end_process, \
-    alphabet_list_length, flatten_list_of_lists, print_pizza_time
+    alphabet_list_length, flatten_list_of_lists
 from HousingPriceScraper.HousingPriceScraper.functions.data_management import save_list_to_txt
 
 
@@ -273,3 +275,32 @@ def config_manager():
                }
     basic_menu(options, back=True)
     return True
+
+
+def select_date_interval_menu():
+    """
+    function allows user to inout start and end date to define an interval of dates
+
+    :return: list of dates
+    """
+    while True:
+        start_date = input('\nInput desired start date with format dd-mm-yyyy:\n')
+        try:
+            start_date = datetime.strptime(start_date, '%d-%m-%Y')
+            break
+        except ValueError:
+            print('invalid start date selected')
+    while True:
+        end_date = input('\nInput desired start date with format dd-mm-yyyy,\nor hit enter to select todays date\n')
+        if end_date == '':
+            end_date = date.today()
+            break
+        else:
+            try:
+                end_date = datetime.strptime(end_date, '%d-%m-%Y')
+                break
+            except ValueError:
+                print('invalid end date selected')
+    list_of_dates = pd.date_range(start_date, end_date, freq='d')
+    list_of_dates = [i.strftime('%d%m%Y') for i in list_of_dates]
+    return list_of_dates

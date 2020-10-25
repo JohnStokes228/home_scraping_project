@@ -2,8 +2,6 @@
 functions used to store or interact with the data. currently includes date related functions too.
 
 TODO - will eventually need to write a suite of functions to interact with data and its structures
-     - I wonder if these should be another class for the spiders to inherit? i.e. scraped_data_handler
-       so it'd all be self. methods rather than function calls...?
      - its possible the column blower upperer might want to run after the read in rather than before.
 """
 from pathlib import Path

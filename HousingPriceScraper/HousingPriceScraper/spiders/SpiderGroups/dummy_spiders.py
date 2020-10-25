@@ -14,22 +14,22 @@ group_path = 'data/raw_data/dummy_data/'
 class DummyBooks(DummyBooksBaseSpider):
 
     name = 'dummy-books-items'
-    data_path = '{}/{}/{}'.format(group_path, name, date_today())
+    data_path = '{}/{}/{}'.format(group_path, name.rsplit('-', 1)[0], date_today())
 
 
 class DummyBooksAttributes(DummyBookAttrSpider):
 
     name = 'dummy-books-attributes'
-    data_path = '{}/{}/{}'.format(group_path, name, date_today())
+    data_path = '{}/{}/{}'.format(group_path, name.rsplit('-', 1)[0], date_today())
 
 
 class DummyBooksCombiSpider(DummyBooksBaseSpider, DummyBookAttrSpider):
 
     name = 'dummy-books-combi'
-    data_path = '{}/{}/{}'.format(group_path, name, date_today())
+    data_path = '{}/{}/{}'.format(group_path, name.rsplit('-', 1)[0], date_today())
 
 
 class DummyQuotes(DummyQuotesBaseSpider):
 
     name = 'dummy-quotes-items'
-    data_path = '{}/{}/{}'.format(group_path, name, date_today())
+    data_path = '{}/{}/{}'.format(group_path, name.rsplit('-', 1)[0], date_today())

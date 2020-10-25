@@ -8,6 +8,7 @@ from pathlib import Path
 import json
 import itertools
 import time
+import pandas as pd
 from HousingPriceScraper.HousingPriceScraper.functions.basic_functions import date_today, current_time
 
 
@@ -88,3 +89,39 @@ def read_txt_to_list(file_loc):
     file = open(file_loc, 'r')
     lines = file.readlines()
     return lines
+
+
+def merge_dictionaries(list_of_dicts):
+    """
+    merge list of dictionaries into a single dictionary
+
+    :param list_of_dicts: a list of dictionaries to merge into a single
+    :return: single dictionary whose keys are all the keys in the list
+    """
+    resultant = {}
+    for dictionary in list_of_dicts:
+        for list_of_values in dictionary:
+            if list_of_values in resultant:
+                resultant[list_of_values] += (dictionary[list_of_values])
+            else:
+                resultant[list_of_values] = dictionary[list_of_values]
+    return resultant
+
+
+def jsons_to_csv(list_of_jsons, csv_name):
+    """
+    function to convert a list of json files into a single csv
+
+    :param list_of_jsons: list of json file paths
+    :param csv_name: name of output csv
+    :return: csv with given name consisting of the data in the input jsons
+    """
+    data = []
+    for json_file in list_of_jsons:
+        with open(json_file, "r", encoding='utf8') as inputjson:
+            data_dict = json.load(inputjson)
+            data.append(data_dict)
+    data = merge_dictionaries(data)
+    df = pd.DataFrame(data)
+    df.to_csv('data/transformed_data/{}.csv'.format(csv_name), index=False)
+    print('csv ready in transformed_data folder with name {}'.format(csv_name))

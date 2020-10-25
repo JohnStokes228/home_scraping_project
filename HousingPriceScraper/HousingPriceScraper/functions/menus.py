@@ -59,6 +59,33 @@ def basic_menu(dict_of_options, back=False):
             print('{} is not currently an option!\n'.format(pick))
 
 
+def basic_menu_non_functional(list_of_options):
+    """
+    basic text based user interface, allows user to select multiple options from a list of available choices.
+
+    :param list_of_options: list of available choices
+    :return: a list of chosen strings
+    """
+    choose = True
+    list_of_options.append('back')
+
+    while choose:
+        print('The following options are available:\n')
+        for option in enumerate(list_of_options):
+            print('\t{} - {}'.format(option[0], option[1]))
+        picks = input('\nType the numeric codes you wish to run\n\n').split(',')
+        choice = []
+        if str(len(list_of_options)) in picks:
+            return True
+        for pick in picks:
+            if pick in [str(i) for i in range((len(list_of_options)))]:
+                choice.append(list_of_options[int(pick)])
+            else:
+                print('{} is not currently an option!\n'.format(pick))
+        if len(choice) > 0:
+            return choice
+
+
 def select_spiders(spiders_dict):
     """
     select from spiders available. allows user to select all spiders, select all spiders within a

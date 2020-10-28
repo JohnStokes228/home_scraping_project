@@ -5,7 +5,7 @@ TODO - make changes to the way data is saved based on how this goes.
 """
 import os
 from HousingPriceScraper.HousingPriceScraper.functions.menus import basic_menu, select_date_interval_menu, basic_menu_non_functional
-from HousingPriceScraper.HousingPriceScraper.functions.basic_functions import print_pizza_time, current_time, date_today
+from HousingPriceScraper.HousingPriceScraper.functions.basic_functions import print_pizza_time
 from HousingPriceScraper.HousingPriceScraper.processes.run_scrapers import find_visible_projects
 from HousingPriceScraper.HousingPriceScraper.functions.data_management import jsons_to_csv
 from HousingPriceScraper.HousingPriceScraper.spiders.SpiderGroups.dummy_spiders import *
@@ -46,7 +46,8 @@ def data_management_menu():
 
     :return: takes you through the data management menu
     """
-    options_dict = {'coalate_data': coalate_data,
+    options_dict = {'coalate_data_custom_interval': coalate_data,
+                    'coalate_all_data': print_pizza_time,
                     'clean_data': print_pizza_time,
                     'join_attributes': print_pizza_time}
     basic_menu(options_dict, back=True)

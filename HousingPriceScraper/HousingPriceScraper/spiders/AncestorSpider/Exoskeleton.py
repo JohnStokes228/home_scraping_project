@@ -7,13 +7,15 @@ TODO
 """
 import scrapy
 import json
-from HousingPriceScraper.HousingPriceScraper.functions.data_management import check_make_dir, date_today
+from HousingPriceScraper.HousingPriceScraper.functions.data_management import check_make_dir, date_today, save_dict_to_json, merge_dictionaries
 from HousingPriceScraper.HousingPriceScraper.spiders.AncestorSpider.abdomen import SpiderMethods
 
 
 class AncestorSpider(scrapy.Spider, SpiderMethods):
 
     name = None
+    item_data = []
+    attribute_data = []
     custom_settings = {'CONCURRENT_REQUESTS': 50,
                        'COOKIES_ENABLED': False,
                        'DOWNLOAD_DELAY': 0.3,
@@ -48,3 +50,21 @@ class AncestorSpider(scrapy.Spider, SpiderMethods):
                 yield scrapy.Request(url=url, meta=meta, callback=self.get_attributes)
             else:
                 print('spider {} has no valid methods of scraping!'.format(self.name))
+
+    def close(self, reason):
+        """
+        method for end of scrape, closes driver if it exists and will save
+
+        :param reason: reason for closure of spider - unused just comes in as default.
+        :return: proper finish
+        """
+        if hasattr(self, 'driver'):
+            self.driver.quit()
+        if len(self.item_data) > 0:
+            self.item_data = merge_dictionaries(self.item_data)
+            save_dict_to_json(self.item_data, self.data_path, self.name.rsplit('-', 1)[0])
+        if len(self.attribute_data) > 0:
+            self.attribute_data = merge_dictionaries(self.attribute_data)
+            save_dict_to_json(self.attribute_data, self.data_path, self.name.rsplit('-', 1)[0], attrs=True)
+
+

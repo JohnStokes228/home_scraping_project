@@ -191,12 +191,3 @@ class PerceptiveAncestorSpider(AncestorSpider):
             else:
                 current_bottom = new_bottom
 
-    def close(spider, reason):
-        """
-        method for end of scrape
-
-        :param reason: reason for closure of spider - unused just comes in as default.
-        :return: proper finish
-        """
-
-        spider.driver.quit()

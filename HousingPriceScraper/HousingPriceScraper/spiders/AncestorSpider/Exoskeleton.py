@@ -51,6 +51,28 @@ class AncestorSpider(scrapy.Spider, SpiderMethods):
             else:
                 print('spider {} has no valid methods of scraping!'.format(self.name))
 
+    def validate_save_scraped_data(self, url, data_dictionary, date_vars=False, attrs=False):
+        """
+        checks quality of data attempting to be saved and then saves it correctly as desired
+
+        :param url: url scraped
+        :param data_dictionary: dictionary of scraped data to be checked
+        :param date_vars: boolean indicating if date variables should be included in save
+        :param attrs: boolean is the data from attribute level scrape
+        :return: either appends data to spiders data attribute, or saves it as a json
+        """
+        lengths = [len(value) for value in data_dictionary.values()]
+        if len(set(lengths)) == 1:
+            print('PASS: appended data from:\n\t{}'.format(url))
+            if attrs:
+                self.attribute_data.append(data_dictionary)
+            else:
+                self.item_data.append(data_dictionary)
+        else:
+            print('FAIL: data features mismatched variable lengths')
+            save_dict_to_json(data_dictionary, self.data_path, 'MISMATCH_FAIL_{}'.format(self.name.rsplit('-', 1)[0]),
+                              attrs=attrs, date_vars=date_vars)
+
     def close(self, reason):
         """
         method for end of scrape, closes driver if it exists and will save

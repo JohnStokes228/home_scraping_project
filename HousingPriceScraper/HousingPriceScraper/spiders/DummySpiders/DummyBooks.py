@@ -2,7 +2,7 @@
 file containing code for Dummy Books Spider. currently being used to test the various methods rather than utilising a
 live site.
 
-TODO - write method to test css
+TODO 
 """
 from HousingPriceScraper.HousingPriceScraper.spiders.AncestorSpider.Exoskeleton import AncestorSpider
 import scrapy
@@ -26,7 +26,7 @@ class DummyBooksBaseSpider(AncestorSpider):
         test = self.scrape_product_box(response, '//article', elements)
         test['page_order'] = list(range(len(test['name'])))
         self.update_recent_urls(['http://books.toscrape.com/catalogue/{}'.format(url) for url in test['url']])
-        self.item_data.append(test)
+        self.validate_save_scraped_data(response.url, test, date_vars=True, attrs=False)
         if hasattr(self, 'get_attributes'):
             for url in test['url']:
                 yield scrapy.Request(url='http://books.toscrape.com/catalogue/{}'.format(url), callback=self.get_attributes)
@@ -41,4 +41,4 @@ class DummyBookAttrSpider(AncestorSpider):
         test = self.scrape_multiple_to_attribute(response, elements)
         attrs = self.scrape_table_to_dict(response, '//th', 'text', '//td', 'text')
         test.update(attrs)
-        self.attribute_data.append(test)
+        self.validate_save_scraped_data(response.url, test, date_vars=True, attrs=True)

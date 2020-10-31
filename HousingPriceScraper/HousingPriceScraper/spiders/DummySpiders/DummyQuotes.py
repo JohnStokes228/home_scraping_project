@@ -20,7 +20,7 @@ class DummyQuotesBaseSpider(PerceptiveAncestorSpider):
             test = self.driver_scrape_multiple_to_attribute(elements)
             test['page_order'] = list(range(len(test['quote'])))
             test = expand_list_variable(test, 'tags', delete_old_var=False)
-            self.item_data.append(test)
+            self.validate_save_scraped_data(response.url, test, date_vars=True)
             self.scroll_to_bottom()
             btn = self.find_press_button("//li[@class='next']/a[@href]")
             if not btn:

@@ -30,8 +30,8 @@ def coalate_data():
         available_dates = [i for i in os.listdir('data/raw_data/{}'.format(data)) if i in dates]
         for date in available_dates:
             jsons += ['data/raw_data/{}/{}/{}'.format(data, date, i) for i in os.listdir('data/raw_data/{}/{}'.format(data, date))]
-        items = [json_file for json_file in jsons if '_attrs_' not in json_file]
-        attrs = [json_file for json_file in jsons if '_attrs_' in json_file]
+        items = [json_file for json_file in jsons if '_attrs_' not in json_file and 'MISMATCH_FAIL' not in json_file]
+        attrs = [json_file for json_file in jsons if '_attrs_' in json_file and 'MISMATCH_FAIL' not in json_file]
         if len(items) > 0:
             jsons_to_csv(items, '{}-{}_{}'.format(dates[0], dates[-1], data.split('/')[1]))
         if len(attrs) > 0:

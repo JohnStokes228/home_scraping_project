@@ -2,7 +2,6 @@
 file containing Dummy Quotes spider. I will test all future changes on this spider. includes immutable scrape,
 addition of expanded list variables.
 
-TODO
 """
 from HousingPriceScraper.HousingPriceScraper.spiders.AncestorSpider.Cephalothorax import PerceptiveAncestorSpider
 from HousingPriceScraper.HousingPriceScraper.functions.data_management import expand_list_variable

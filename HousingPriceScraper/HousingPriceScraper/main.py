@@ -5,8 +5,7 @@ I've decided to keep this file as clean as possible for legibility reasons / bec
 generic code i also want to use elsewhere. This decision also allows us to delay the activation of the reactor until
 such a time as it is unavoidable, thus dodging any nuisance that that usually causes.
 
-TODO - add new options: consolidate_data
-     - add new option: get_log_summary
+TODO - add new option: get_log_summary
      - add new option: print_pizza_time for nostalgia's sake
 """
 from HousingPriceScraper.HousingPriceScraper.functions.menus import basic_menu, project_visibility_menu

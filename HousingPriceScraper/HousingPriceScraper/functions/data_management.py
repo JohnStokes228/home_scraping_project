@@ -1,8 +1,6 @@
 """
 functions used to store or interact with the data. currently includes date related functions too.
 
-TODO - will eventually need to write a suite of functions to interact with data and its structures
-     - its possible the column blower upperer might want to run after the read in rather than before.
 """
 from pathlib import Path
 import json

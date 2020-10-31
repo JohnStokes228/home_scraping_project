@@ -2,7 +2,6 @@
 file containing code for Dummy Books Spider. currently being used to test the various methods rather than utilising a
 live site.
 
-TODO 
 """
 from HousingPriceScraper.HousingPriceScraper.spiders.AncestorSpider.Exoskeleton import AncestorSpider
 import scrapy

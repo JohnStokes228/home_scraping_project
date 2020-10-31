@@ -3,15 +3,16 @@ ancestor spider is the highest generation of spider involved. will contain all b
 all the descendant spiders.
 the spiders exoskeleton wraps the set of gooey interior functions into a single class
 
-TODO
+TODO - want a method to save scraped data at set size intervals to avoid too much data stored in memory where possible
 """
 import scrapy
 import json
 from HousingPriceScraper.HousingPriceScraper.functions.data_management import check_make_dir, date_today, save_dict_to_json, merge_dictionaries
-from HousingPriceScraper.HousingPriceScraper.spiders.AncestorSpider.abdomen import SpiderMethods
+from HousingPriceScraper.HousingPriceScraper.spiders.AncestorSpider.Abdomen import SpiderMethods
+from HousingPriceScraper.HousingPriceScraper.spiders.AncestorSpider.HiveMind import HiveMind
 
 
-class AncestorSpider(scrapy.Spider, SpiderMethods):
+class AncestorSpider(scrapy.Spider, SpiderMethods, HiveMind):
 
     name = None
     item_data = []
@@ -53,7 +54,7 @@ class AncestorSpider(scrapy.Spider, SpiderMethods):
 
     def validate_save_scraped_data(self, url, data_dictionary, date_vars=False, attrs=False):
         """
-        checks quality of data attempting to be saved and then saves it correctly as desired
+        checks if variable lengths match, checks if NULLs are included within data, saves accordingly.
 
         :param url: url scraped
         :param data_dictionary: dictionary of scraped data to be checked
@@ -63,11 +64,17 @@ class AncestorSpider(scrapy.Spider, SpiderMethods):
         """
         lengths = [len(value) for value in data_dictionary.values()]
         if len(set(lengths)) == 1:
-            print('PASS: appended data from:\n\t{}'.format(url))
-            if attrs:
-                self.attribute_data.append(data_dictionary)
-            else:
-                self.item_data.append(data_dictionary)
+            print('PASS: successfully scraped {} values from:\n\t{}'.format(lengths[0], url))
+            for key in data_dictionary.keys():
+                if None in data_dictionary[key]:
+                    print('FAIL: found NoneTypeObj in variable {}'.format(key))
+                    save_dict_to_json(data_dictionary, self.data_path,
+                                      'NULL_FAIL_{}'.format(self.name.rsplit('-', 1)[0]), attrs=attrs,
+                                      date_vars=date_vars)
+                elif attrs:
+                    self.attribute_data.append(data_dictionary)
+                else:
+                    self.item_data.append(data_dictionary)
         else:
             print('FAIL: data features mismatched variable lengths')
             save_dict_to_json(data_dictionary, self.data_path, 'MISMATCH_FAIL_{}'.format(self.name.rsplit('-', 1)[0]),

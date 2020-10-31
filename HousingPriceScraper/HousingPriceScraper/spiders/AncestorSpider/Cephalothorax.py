@@ -1,8 +1,6 @@
 """
 includes Selenium features, to allow the spider to 'see' the website and, y'know, poke about on it I guess
 
-TODO - write basic interactivity methods
-     - * write scrape cell to attribute method replacement *
 """
 from selenium import webdriver
 from selenium.webdriver.common.by import By

@@ -17,6 +17,8 @@ class AncestorSpider(scrapy.Spider, SpiderMethods, HiveMind):
     name = None
     item_data = []
     attribute_data = []
+    requests = []
+    responses = []
     custom_settings = {'CONCURRENT_REQUESTS': 50,
                        'COOKIES_ENABLED': False,
                        'DOWNLOAD_DELAY': 0.3,

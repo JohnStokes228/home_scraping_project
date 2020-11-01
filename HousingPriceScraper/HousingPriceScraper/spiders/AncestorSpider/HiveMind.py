@@ -15,6 +15,8 @@ class HiveMind:
     scrape_log = {date_today(): {'no_length_fails': 0,
                                  'no_NULL_fails': 0,
                                  'no_runs': 0,
+                                 'no_response_urls': 0,
+                                 'no_request_urls': 0,
                                  'missed_urls': [],
                                  'no_pages_scraped': 0}}
 
@@ -56,10 +58,10 @@ class HiveMind:
         lengths = [len(value) for value in data_dict.values()]
         if len(set(lengths)) == 1:
             print('LOGGER PASS: successfully scraped {} values from:\n\t{}'.format(lengths[0], url))
-            self.scrape_log[date_today()]['no_length_fails'] += 1
             return True
         else:
             print('LOGGER FAIL: number of attributes per variable is inconsistent from url:\n{}'.format(url))
+            self.scrape_log[date_today()]['no_length_fails'] += 1
             return False
 
     def null_value_check(self, data_dict):
@@ -69,12 +71,12 @@ class HiveMind:
         :param data_dict: dictionary of scraped data
         :return: True if pass, False if fail
         """
-        start_NULLs = self.scrape_log[date_today()]['no_NULL_fails']
+        start_nulls = self.scrape_log[date_today()]['no_NULL_fails']
         for key in data_dict.keys():
             if None in data_dict[key]:
                 print('LOGGER FAIL: found NoneTypeObj in variable {}'.format(key))
                 self.scrape_log[date_today()]['no_NULL_fails'] += 1
-        if start_NULLs == self.scrape_log[date_today()]['no_NULL_fails']:
+        if start_nulls == self.scrape_log[date_today()]['no_NULL_fails']:
             print('LOGGER PASS: no NULLs present in data')
             return True
         else:
@@ -91,7 +93,20 @@ class HiveMind:
         print('LOGGER: added 1 to {}'.format(numeric))
 
     def response_url_check(self):
-        pass
+        """
+        check the requests sent verse responses received
+
+        :return:
+        """
+        self.scrape_log[date_today()]['no_response_urls'] = len(self.responses)
+        self.scrape_log[date_today()]['no_request_urls'] = len(self.requests)
+        self.scrape_log[date_today()]['missed_urls'] = [i for i in self.requests if i not in self.responses]
+        if len(self.scrape_log[date_today()]['missed_urls']) > 0:
+            print('LOGGER FAIL: there were {} urls not successfully scraped, including:')
+            for url in self.scrape_log[date_today()]['missed_urls']:
+                print('\t- {}'.format(url))
+        else:
+            print('LOGGER PASS: all requests yielded data')
 
     def save_log(self):
         """
@@ -100,6 +115,7 @@ class HiveMind:
         :return: saves json log like a big tiddy bitch
         """
         self.increment_numeric('no_runs')
+        self.response_url_check()
         log_info = self.scrape_log
         existing_log = self.get_log()
         if type(existing_log) == 'dict':

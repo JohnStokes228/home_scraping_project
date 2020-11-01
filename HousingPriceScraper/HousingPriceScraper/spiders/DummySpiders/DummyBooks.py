@@ -16,6 +16,7 @@ class DummyBooksBaseSpider(AncestorSpider):
         for i in range(1, int(number_of_pages)):
             yield scrapy.Request('http://books.toscrape.com/catalogue/page-{}.html'.format(str(i)),
                                  callback=self.get_items)
+            self.requests.append('http://books.toscrape.com/catalogue/page-{}.html'.format(str(i)))
 
     def get_items(self, response):
 
@@ -26,9 +27,11 @@ class DummyBooksBaseSpider(AncestorSpider):
         test['page_order'] = list(range(len(test['name'])))
         self.update_recent_urls(['http://books.toscrape.com/catalogue/{}'.format(url) for url in test['url']])
         self.validate_save_scraped_data(response.url, test, date_vars=True, attrs=False)
+        self.responses.append(response.url)
         if hasattr(self, 'get_attributes'):
             for url in test['url']:
                 yield scrapy.Request(url='http://books.toscrape.com/catalogue/{}'.format(url), callback=self.get_attributes)
+                self.requests.append('http://books.toscrape.com/catalogue/{}'.format(url))
 
 
 class DummyBookAttrSpider(AncestorSpider):
@@ -41,3 +44,4 @@ class DummyBookAttrSpider(AncestorSpider):
         attrs = self.scrape_table_to_dict(response, '//th', 'text', '//td', 'text')
         test.update(attrs)
         self.validate_save_scraped_data(response.url, test, date_vars=True, attrs=True)
+        self.responses.append(response.url)

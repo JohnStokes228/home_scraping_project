@@ -11,6 +11,7 @@ class DummyQuotesBaseSpider(PerceptiveAncestorSpider):
 
     def get_items(self, response):
 
+        self.requests.append(response.url)
         self.get_url(response)
         while True:
             elements = [("quote", "//div/span[@class='text']", "text"),
@@ -24,3 +25,4 @@ class DummyQuotesBaseSpider(PerceptiveAncestorSpider):
             btn = self.find_press_button("//li[@class='next']/a[@href]")
             if not btn:
                 break
+        self.responses.append(response.url)

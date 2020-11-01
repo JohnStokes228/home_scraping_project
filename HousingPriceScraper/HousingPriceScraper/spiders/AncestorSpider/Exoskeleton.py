@@ -62,31 +62,29 @@ class AncestorSpider(scrapy.Spider, SpiderMethods, HiveMind):
         :param attrs: boolean is the data from attribute level scrape
         :return: either appends data to spiders data attribute, or saves it as a json
         """
-        lengths = [len(value) for value in data_dictionary.values()]
-        if len(set(lengths)) == 1:
-            print('PASS: successfully scraped {} values from:\n\t{}'.format(lengths[0], url))
-            for key in data_dictionary.keys():
-                if None in data_dictionary[key]:
-                    print('FAIL: found NoneTypeObj in variable {}'.format(key))
-                    save_dict_to_json(data_dictionary, self.data_path,
-                                      'NULL_FAIL_{}'.format(self.name.rsplit('-', 1)[0]), attrs=attrs,
-                                      date_vars=date_vars)
-                elif attrs:
-                    self.attribute_data.append(data_dictionary)
-                else:
-                    self.item_data.append(data_dictionary)
-        else:
-            print('FAIL: data features mismatched variable lengths')
+        length_check = self.variable_length_check(data_dictionary, url)
+        null_check = self.null_value_check(data_dictionary)
+        self.increment_numeric()
+        if not length_check:
             save_dict_to_json(data_dictionary, self.data_path, 'MISMATCH_FAIL_{}'.format(self.name.rsplit('-', 1)[0]),
                               attrs=attrs, date_vars=date_vars)
+        elif not null_check:
+            save_dict_to_json(data_dictionary, self.data_path, 'NULL_FAIL_{}'.format(self.name.rsplit('-', 1)[0]),
+                              attrs=attrs, date_vars=date_vars)
+        else:
+            if attrs:
+                self.attribute_data.append(data_dictionary)
+            else:
+                self.item_data.append(data_dictionary)
 
     def close(self, reason):
         """
-        method for end of scrape, closes driver if it exists and will save
+        method for end of scrape, closes driver if it exists and will save both data and log
 
         :param reason: reason for closure of spider - unused just comes in as default.
         :return: proper finish
         """
+        self.save_log()
         if hasattr(self, 'driver'):
             self.driver.quit()
         if len(self.item_data) > 0:

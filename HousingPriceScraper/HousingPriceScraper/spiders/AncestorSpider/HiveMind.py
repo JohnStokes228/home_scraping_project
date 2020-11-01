@@ -2,25 +2,21 @@
 the shared memory of the spiders. My intention is to have a single, cleanable log per spider but we'll see how that
 goes. I wonder if QAing functions should be covered here too? Yes, yes they should
 
-TODO - write method to create new log file if needed
-     - write methods to update logs with info on pass / fail of variable lengths
-     - write method to update logs with info on pass / fail of NULL checks
-     - write method to update logs with number of pages produced
-     - write method to update logs with number (and specifics) of urls from input list not scraped
-     - write method to update log file for spider with todays info.
+TODO - write method to update logs with number (and specifics) of urls from input list not scraped
 """
 from HousingPriceScraper.HousingPriceScraper.functions.basic_functions import date_today
+from HousingPriceScraper.HousingPriceScraper.functions.data_management import merge_dictionaries
 import os
 import json
 
 
 class HiveMind:
 
-    run_log = {date_today(): {'no_length_fails': 0,
-                              'no_NULL_fails': 0,
-                              'no_runs': 0,
-                              'missed_urls': [],
-                              'no_pages_scraped': 0}}
+    scrape_log = {date_today(): {'no_length_fails': 0,
+                                 'no_NULL_fails': 0,
+                                 'no_runs': 0,
+                                 'missed_urls': [],
+                                 'no_pages_scraped': 0}}
 
     def get_log(self):
         """
@@ -35,7 +31,7 @@ class HiveMind:
                 spider_log = json.load(current_log_file)
             return spider_log
         else:
-            return None
+            return False
 
     def check_log_for_today(self, log):
         """
@@ -49,5 +45,67 @@ class HiveMind:
         else:
             return False
 
-    def save_log(self):
+    def variable_length_check(self, data_dict, url):
+        """
+        checks if number of attributes scraped is equal across the board
+
+        :param url: the url scraped
+        :param data_dict: dictionary of scraped data
+        :return: True if pass, else False
+        """
+        lengths = [len(value) for value in data_dict.values()]
+        if len(set(lengths)) == 1:
+            print('LOGGER PASS: successfully scraped {} values from:\n\t{}'.format(lengths[0], url))
+            self.scrape_log[date_today()]['no_length_fails'] += 1
+            return True
+        else:
+            print('LOGGER FAIL: number of attributes per variable is inconsistent from url:\n{}'.format(url))
+            return False
+
+    def null_value_check(self, data_dict):
+        """
+        checks for NULLs within scraped data, returns False if present
+
+        :param data_dict: dictionary of scraped data
+        :return: True if pass, False if fail
+        """
+        start_NULLs = self.scrape_log[date_today()]['no_NULL_fails']
+        for key in data_dict.keys():
+            if None in data_dict[key]:
+                print('LOGGER FAIL: found NoneTypeObj in variable {}'.format(key))
+                self.scrape_log[date_today()]['no_NULL_fails'] += 1
+        if start_NULLs == self.scrape_log[date_today()]['no_NULL_fails']:
+            print('LOGGER PASS: no NULLs present in data')
+            return True
+        else:
+            return False
+
+    def increment_numeric(self, numeric='no_pages_scraped'):
+        """
+        increment numeric value in log dictionary
+
+        :param numeric: name of numeric variable to increment
+        :return: increments don't you get it
+        """
+        self.scrape_log[date_today()][numeric] += 1
+        print('LOGGER: added 1 to {}'.format(numeric))
+
+    def response_url_check(self):
         pass
+
+    def save_log(self):
+        """
+        reads in existing log, appends self.log to it, saves it to logs folder
+
+        :return: saves json log like a big tiddy bitch
+        """
+        self.increment_numeric('no_runs')
+        log_info = self.scrape_log
+        existing_log = self.get_log()
+        if type(existing_log) == 'dict':
+            if not self.check_log_for_today():
+                log_info.update(existing_log)
+            else:
+                log_info = merge_dictionaries([log_info, existing_log])
+        with open('data/scrape_logs/{}.json'.format(self.name), 'w') as fp:
+            json.dump(log_info, fp, sort_keys=True, indent=4)

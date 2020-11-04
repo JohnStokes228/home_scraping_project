@@ -28,9 +28,9 @@ class AncestorSpider(scrapy.Spider, SpiderMethods, HiveMind):
                        'RETRY_TIMES': 5,
                        'DOWNLOADER_MIDDLEWARES': {'scrapy.contrib.downloadermiddleware.useragent.UserAgentMiddleware': None,
                                                   'random_useragent.RandomUserAgentMiddleware': 400},
-                       'USER_AGENT_LIST': 'configs/user_agents_list.txt'
+                       'USER_AGENT_LIST': 'HousingPriceScraper/HousingPriceScraper/configs/user_agents_list.txt'
                        }
-    data_path = 'data/raw_data/{}/{}'.format(name, date_today())
+    data_path = 'HousingPriceScraper/HousingPriceScraper/data/raw_data/{}/{}'.format(name, date_today())
 
     def start_requests(self):
         """
@@ -41,7 +41,7 @@ class AncestorSpider(scrapy.Spider, SpiderMethods, HiveMind):
         meta = {'dont_redirect': True,
                 'handle_httpstatus_list': [301, 302]}
         check_make_dir(folder=self.data_path)
-        with open('configs/chosen_urls.json') as input_urls_json:
+        with open('HousingPriceScraper/HousingPriceScraper/configs/chosen_urls.json') as input_urls_json:
             urls_dict = json.load(input_urls_json)
         input_urls = urls_dict[self.name]
         for url in input_urls:
@@ -95,5 +95,3 @@ class AncestorSpider(scrapy.Spider, SpiderMethods, HiveMind):
         if len(self.attribute_data) > 0:
             self.attribute_data = merge_dictionaries(self.attribute_data)
             save_dict_to_json(self.attribute_data, self.data_path, self.name.rsplit('-', 1)[0], attrs=True)
-
-

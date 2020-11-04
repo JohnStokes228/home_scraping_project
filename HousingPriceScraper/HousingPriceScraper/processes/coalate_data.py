@@ -21,16 +21,16 @@ def coalate_data():
     visible_projects = find_visible_projects()
     datas = []
     for project in visible_projects:
-        project_data = os.listdir('data/raw_data/{}'.format(project))
+        project_data = os.listdir('HousingPriceScraper/HousingPriceScraper/data/raw_data/{}'.format(project))
         datas += ['{}/{}'.format(project, i) for i in project_data]
     chosen_datas = basic_menu_non_functional([i.split('/')[1] for i in datas])
     datas = [i for i in datas if i.split('/')[1] in chosen_datas]
     dates = select_date_interval_menu()
     for data in datas:
         jsons = []
-        available_dates = [i for i in os.listdir('data/raw_data/{}'.format(data)) if i in dates]
+        available_dates = [i for i in os.listdir('HousingPriceScraper/HousingPriceScraper/data/raw_data/{}'.format(data)) if i in dates]
         for date in available_dates:
-            jsons += ['data/raw_data/{}/{}/{}'.format(data, date, i) for i in os.listdir('data/raw_data/{}/{}'.format(data, date))]
+            jsons += ['HousingPriceScraper/HousingPriceScraper/data/raw_data/{}/{}/{}'.format(data, date, i) for i in os.listdir('HousingPriceScraper/HousingPriceScraper/data/raw_data/{}/{}'.format(data, date))]
         items = [json_file for json_file in jsons if '_attrs_' not in json_file and 'FAIL' not in json_file]
         attrs = [json_file for json_file in jsons if '_attrs_' in json_file and 'FAIL' not in json_file]
         if len(items) > 0:
@@ -50,15 +50,15 @@ def coalate_all_data():
     visible_projects = find_visible_projects()
     datas = []
     for project in visible_projects:
-        project_data = os.listdir('data/raw_data/{}'.format(project))
+        project_data = os.listdir('HousingPriceScraper/HousingPriceScraper/data/raw_data/{}'.format(project))
         datas += ['{}/{}'.format(project, i) for i in project_data]
     chosen_datas = basic_menu_non_functional([i.split('/')[1] for i in datas])
     datas = [i for i in datas if i.split('/')[1] in chosen_datas]
     for data in datas:
         jsons = []
-        available_dates = [i for i in os.listdir('data/raw_data/{}'.format(data))]
+        available_dates = [i for i in os.listdir('HousingPriceScraper/HousingPriceScraper/data/raw_data/{}'.format(data))]
         for date in available_dates:
-            jsons += ['data/raw_data/{}/{}/{}'.format(data, date, i) for i in os.listdir('data/raw_data/{}/{}'.format(data, date))]
+            jsons += ['HousingPriceScraper/HousingPriceScraper/data/raw_data/{}/{}/{}'.format(data, date, i) for i in os.listdir('HousingPriceScraper/HousingPriceScraper/data/raw_data/{}/{}'.format(data, date))]
         items = [json_file for json_file in jsons if '_attrs_' not in json_file and 'FAIL' not in json_file]
         attrs = [json_file for json_file in jsons if '_attrs_' in json_file and 'FAIL' not in json_file]
         if len(items) > 0:

@@ -128,13 +128,13 @@ class SpiderMethods:
         :param urls_list: a list of scraped attribute level urls
         :return: updates /configs/input_urls/recent_urls.json
         """
-        with open('configs/input_urls/recent_urls.json') as recent_urls_json:
+        with open('HousingPriceScraper/HousingPriceScraper/configs/input_urls/recent_urls.json') as recent_urls_json:
             recent_dict = json.load(recent_urls_json)
         spider_name = '{}-attributes'.format(self.name.rsplit('-', 1)[0])
         if spider_name in recent_dict:
             recent_dict[spider_name] = list(set(recent_dict[spider_name] + urls_list))
         else:
             recent_dict[spider_name] = urls_list
-        with open('configs/input_urls/recent_urls.json', 'w') as fp:
+        with open('HousingPriceScraper/HousingPriceScraper/configs/input_urls/recent_urls.json', 'w') as fp:
             json.dump(recent_dict, fp, sort_keys=True, indent=4)
         print('recent_urls for {} updated'.format(self.name))

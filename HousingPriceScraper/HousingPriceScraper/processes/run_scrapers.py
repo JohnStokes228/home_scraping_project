@@ -35,9 +35,9 @@ def find_visible_projects():
     :return: list of visible projects
     """
     try:
-        visible_projects = [i.replace('\n', '') for i in read_txt_to_list('configs/visible_projects_to_scrape.txt')]
+        visible_projects = [i.replace('\n', '') for i in read_txt_to_list('HousingPriceScraper/HousingPriceScraper/configs/visible_projects_to_scrape.txt')]
     except FileNotFoundError:
-        visible_projects = [i.split('.')[0] for i in os.listdir('spiders/SpiderGroups')[:-1]]
+        visible_projects = [i.split('.')[0] for i in os.listdir('HousingPriceScraper/HousingPriceScraper/spiders/SpiderGroups')[:-1]]
     return visible_projects
 
 
@@ -51,7 +51,7 @@ def create_spiders_list():
                    inspect.isclass(obj) and str(obj).split('.')[2] == 'spiders' and 'BaseSpider' not in str(obj)]
     visible_projects = find_visible_projects()
     spiders_dict = {i.split('.')[0]: [obj for obj in spiders_lst if i.split('.')[0] in str(obj)] for i in
-                    os.listdir('spiders/SpiderGroups')[:-1] if i.split('.')[0] in visible_projects}
+                    os.listdir('HousingPriceScraper/HousingPriceScraper/spiders/SpiderGroups')[:-1] if i.split('.')[0] in visible_projects}
     if len(list(spiders_dict.keys())) > 0:
         spiders_lst = select_spiders(spiders_dict)
     else:

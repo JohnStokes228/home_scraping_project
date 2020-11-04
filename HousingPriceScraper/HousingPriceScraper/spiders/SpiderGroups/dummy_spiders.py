@@ -8,7 +8,7 @@ from HousingPriceScraper.HousingPriceScraper.spiders.DummySpiders.DummyQuotes im
 from HousingPriceScraper.HousingPriceScraper.functions.data_management import date_today
 
 
-group_path = 'data/raw_data/dummy_spiders/'
+group_path = 'HousingPriceScraper/HousingPriceScraper/data/raw_data/dummy_spiders/'
 
 
 class DummyBooks(DummyBooksBaseSpider):

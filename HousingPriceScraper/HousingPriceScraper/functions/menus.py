@@ -164,7 +164,7 @@ def project_visibility_menu():
 
     :return: creates a txt file containing the list of desired project names, one per row.
     """
-    projects = [i.split('.')[0] for i in os.listdir('spiders/SpiderGroups')[:-1]]
+    projects = [i.split('.')[0] for i in os.listdir('HousingPriceScraper/HousingPriceScraper/spiders/SpiderGroups')[:-1]]
     print('Available projects are:\n')
     for project in enumerate(projects):
         print('\t{} - {}'.format(project[0], project[1]))
@@ -178,7 +178,7 @@ def project_visibility_menu():
             if choice.isdigit() and int(choice) in range(len(projects)):
                 choice_list.append(projects[int(choice)])
         print('You have selected to display the following spider groupings:\n\t{}\n'.format(choice_list))
-        save_list_to_txt(choice_list, 'configs/visible_projects_to_scrape.txt')
+        save_list_to_txt(choice_list, 'HousingPriceScraper/HousingPriceScraper/configs/visible_projects_to_scrape.txt')
         return True
 
 
@@ -188,7 +188,7 @@ def set_config():
 
     :return: will set the start_urls of the spiders.
     """
-    available_configs = open('configs/input_url_config_descriptions.txt', 'r')
+    available_configs = open('HousingPriceScraper/HousingPriceScraper/configs/input_url_config_descriptions.txt', 'r')
     options = available_configs.readlines()
     options_dict = {}
     print('available configs include:\n')
@@ -202,7 +202,7 @@ def set_config():
     configs = []
     for choice in chosen:
         if int(choice) in options_dict:
-            with open('configs/input_urls/{}.json'.format(options_dict[int(choice)])) as f:
+            with open('HousingPriceScraper/HousingPriceScraper/configs/input_urls/{}.json'.format(options_dict[int(choice)])) as f:
                 configs.append(json.load(f))
     final_config = defaultdict(list)
     for config in configs:
@@ -214,12 +214,12 @@ def set_config():
         for key, value in final_config.items():
             if any(isinstance(val, list) for val in value):
                 final_config[key] = flatten_list_of_lists(value, make_set=True)
-    with open('configs/input_urls/defaults.json') as default_urls_json:
+    with open('HousingPriceScraper/HousingPriceScraper/configs/input_urls/defaults.json') as default_urls_json:
         default_dict = json.load(default_urls_json)
     for key, value in default_dict.items():
         if key not in final_config.keys():
             final_config[key] = value
-    with open('configs/chosen_urls.json', 'w') as fp:
+    with open('HousingPriceScraper/HousingPriceScraper/configs/chosen_urls.json', 'w') as fp:
         json.dump(final_config, fp, sort_keys=True, indent=4)
     return True
 
@@ -230,13 +230,13 @@ def append_recent_urls():
 
     :return: default.json is updated
     """
-    with open('configs/input_urls/defaults.json') as default_urls_json:
+    with open('HousingPriceScraper/HousingPriceScraper/configs/input_urls/defaults.json') as default_urls_json:
         default_dict = json.load(default_urls_json)
-    with open('configs/input_urls/recent_urls.json') as recent_urls_json:
+    with open('HousingPriceScraper/HousingPriceScraper/configs/input_urls/recent_urls.json') as recent_urls_json:
         recent_dict = json.load(recent_urls_json)
     for key, value in recent_dict.items():
         default_dict.setdefault(key, []).extend(value)
-    with open('configs/input_urls/defaults.json', 'w') as fp:
+    with open('HousingPriceScraper/HousingPriceScraper/configs/input_urls/defaults.json', 'w') as fp:
         json.dump(default_dict, fp, sort_keys=True, indent=4)
 
 
@@ -246,13 +246,13 @@ def replace_default_urls():
 
     :return: defaults.json is updated
     """
-    with open('configs/input_urls/defaults.json') as default_urls_json:
+    with open('HousingPriceScraper/HousingPriceScraper/configs/input_urls/defaults.json') as default_urls_json:
         default_dict = json.load(default_urls_json)
-    with open('configs/input_urls/recent_urls.json') as recent_urls_json:
+    with open('HousingPriceScraper/HousingPriceScraper/configs/input_urls/recent_urls.json') as recent_urls_json:
         recent_dict = json.load(recent_urls_json)
     for key, value in recent_dict.items():
         default_dict[key] = value
-    with open('configs/input_urls/defaults.json', 'w') as fp:
+    with open('HousingPriceScraper/HousingPriceScraper/configs/input_urls/defaults.json', 'w') as fp:
         json.dump(default_dict, fp, sort_keys=True, indent=4)
 
 
@@ -262,13 +262,13 @@ def create_new_config():
 
     :return: new config is created
     """
-    with open('configs/input_urls/recent_urls.json') as recent_urls_json:
+    with open('HousingPriceScraper/HousingPriceScraper/configs/input_urls/recent_urls.json') as recent_urls_json:
         urls_dict = json.load(recent_urls_json)
     config_name = input('Type a name for the new config file:\n').replace(' ', '_').replace(':', '')
     config_desc = input('Type a brief description for the new config file:\n')
-    with open('configs/input_urls/{}.json'.format(config_name), 'w') as fp:
+    with open('HousingPriceScraper/HousingPriceScraper/configs/input_urls/{}.json'.format(config_name), 'w') as fp:
         json.dump(urls_dict, fp, sort_keys=True, indent=4)
-    with open('configs/input_url_config_descriptions.txt', 'a') as input_descs:
+    with open('HousingPriceScraper/HousingPriceScraper/configs/input_url_config_descriptions.txt', 'a') as input_descs:
         input_descs.write('\n{}: {}'.format(config_name, config_desc))
     print('\nSuccessfully saved recently scraped urls to new config: {}.json'.format(config_name))
 
@@ -279,11 +279,11 @@ def clear_recent_urls():
 
     :return: recent_urls will become an empty dictionary.
     """
-    with open('configs/input_urls/recent_urls.json') as recent_urls_json:
+    with open('HousingPriceScraper/HousingPriceScraper/configs/input_urls/recent_urls.json') as recent_urls_json:
         recent_dict = json.load(recent_urls_json)
     for key in recent_dict.keys():
         recent_dict[key] = []
-    with open('configs/input_urls/recent_urls.json', 'w') as fp:
+    with open('HousingPriceScraper/HousingPriceScraper/configs/input_urls/recent_urls.json', 'w') as fp:
         json.dump(recent_dict, fp, sort_keys=True, indent=4)
 
 

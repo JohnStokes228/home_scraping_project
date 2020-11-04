@@ -11,10 +11,12 @@ TODO - add new option: get_log_summary
 from HousingPriceScraper.HousingPriceScraper.functions.menus import basic_menu, project_visibility_menu
 from HousingPriceScraper.HousingPriceScraper.processes.run_scrapers import scrape_menu
 from HousingPriceScraper.HousingPriceScraper.processes.coalate_data import data_management_menu
+from HousingPriceScraper.HousingPriceScraper.processes.log_management import log_management_menu
 
 
 if __name__ == '__main__':
     options_dict = {'set_visible_projects': project_visibility_menu,
                     'scraping_main': scrape_menu,
-                    'data_management_main': data_management_menu}
+                    'data_management_main': data_management_menu,
+                    'log_inspection_main': log_management_menu}
     basic_menu(options_dict)

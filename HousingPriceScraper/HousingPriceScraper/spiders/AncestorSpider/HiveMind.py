@@ -2,7 +2,7 @@
 the shared memory of the spiders. My intention is to have a single, cleanable log per spider but we'll see how that
 goes. I wonder if QAing functions should be covered here too? Yes, yes they should
 
-TODO - write method to update logs with number (and specifics) of urls from input list not scraped
+
 """
 from HousingPriceScraper.HousingPriceScraper.functions.basic_functions import date_today
 from HousingPriceScraper.HousingPriceScraper.functions.data_management import merge_dictionaries
@@ -26,10 +26,10 @@ class HiveMind:
 
         :return: either None or a dictionary
         """
-        logs = os.listdir('data/scrape_logs')
+        logs = os.listdir('HousingPriceScraper/HousingPriceScraper/data/scrape_logs')
         logs = [log for log in logs if self.name in log]
         if len(logs) > 0:
-            with open(logs[0]) as current_log_file:
+            with open('HousingPriceScraper/HousingPriceScraper/data/scrape_logs/{}'.format(logs[0])) as current_log_file:
                 spider_log = json.load(current_log_file)
             return spider_log
         else:
@@ -118,10 +118,12 @@ class HiveMind:
         self.response_url_check()
         log_info = self.scrape_log
         existing_log = self.get_log()
-        if type(existing_log) == 'dict':
-            if not self.check_log_for_today():
+        if isinstance(existing_log, dict):
+            if not self.check_log_for_today(existing_log):
                 log_info.update(existing_log)
             else:
-                log_info = merge_dictionaries([log_info, existing_log])
-        with open('data/scrape_logs/{}.json'.format(self.name), 'w') as fp:
+                log_info[date_today()] = merge_dictionaries([log_info[date_today()], existing_log[date_today()]])
+                del existing_log[date_today()]
+                log_info.update(existing_log)
+        with open('HousingPriceScraper/HousingPriceScraper/data/scrape_logs/{}.json'.format(self.name), 'w') as fp:
             json.dump(log_info, fp, sort_keys=True, indent=4)

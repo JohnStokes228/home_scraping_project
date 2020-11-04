@@ -17,7 +17,7 @@ def check_make_dir(folder):
     :param folder: folder to check for / makes name. accepts multiple layers
     :return: sticks the folder where the sun don't shine
     """
-    Path('{}'.format(folder)).mkdir(parents=True, exist_ok=True)
+    Path(folder).mkdir(parents=True, exist_ok=True)
     print('directory ready at {}'.format(folder))
 
 
@@ -121,5 +121,5 @@ def jsons_to_csv(list_of_jsons, csv_name):
             data.append(data_dict)
     data = merge_dictionaries(data)
     df = pd.DataFrame(data)
-    df.to_csv('data/transformed_data/{}.csv'.format(csv_name), index=False)
+    df.to_csv('HousingPriceScraper/HousingPriceScraper/data/transformed_data/{}.csv'.format(csv_name), index=False)
     print('csv ready in transformed_data folder with name {}'.format(csv_name))

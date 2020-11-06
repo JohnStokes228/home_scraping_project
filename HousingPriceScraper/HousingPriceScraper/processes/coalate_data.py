@@ -1,10 +1,12 @@
 """
 function suite to coalate jsons into meaningful data.
 
-TODO - write cleaning methods
-     - write method to join attribute to regular data
+TODO - write cleaning methods - does it not make sense to build a separate cleaning pipeline somewhere?
+     - yeah i think cleaning and classifying should be its own follow on project
+     - rewrite method for joining attribute to item data such that it is more robust.
 """
 import os
+import pandas as pd
 from HousingPriceScraper.HousingPriceScraper.functions.menus import basic_menu, select_date_interval_menu, basic_menu_non_functional
 from HousingPriceScraper.HousingPriceScraper.functions.basic_functions import print_pizza_time, date_today
 from HousingPriceScraper.HousingPriceScraper.processes.run_scrapers import find_visible_projects
@@ -69,6 +71,34 @@ def coalate_all_data():
     return True
 
 
+def join_attributes_to_items():
+    """
+    function to join attribute file to item file and output as a single 'complete' csv
+
+    :return: single combined csv
+    """
+    data_base_dir = 'HousingPriceScraper/HousingPriceScraper/data/transformed_data'
+    files = [file for file in os.listdir(data_base_dir)]
+    spiders = list(set([file.split('_')[1].replace('.csv', '') for file in files]))
+    for spider in spiders:
+        attr_files = [file for file in files if 'attrs' in file and spider in file]
+        items_files = [file for file in files if 'attrs' not in file and spider in file]
+        if len(items_files) > 0:
+            items_files = [pd.read_csv('{}/{}'.format(data_base_dir, item)) for item in items_files]
+            df = pd.concat(items_files)
+            if len(attr_files) > 0:
+                attr_files = [pd.read_csv('{}/{}'.format(data_base_dir, attr)) for attr in attr_files]
+                attr_df = pd.concat(attr_files)
+                attr_df.drop_duplicates(subset=attr_df.columns.difference(['time_scraped', 'date_scraped']))
+                join_cols = [col for col in df.columns if col in attr_df.columns and col not in ['time_scraped', 'date_scraped']]
+                df = df.merge(attr_df, on=join_cols, how='left')
+            df.to_csv('{}/complete_transformed_data/{}_complete.csv'.format(data_base_dir, spider), index=False)
+            print('successfully saved complete data for spider {} to file:\n\t{}_complete.csv'.format(spider, spider))
+        else:
+            print('impossible to complete files for spider {}'.format(spider))
+    return True
+
+
 def data_management_menu():
     """
     menu options for the data management function suite.
@@ -77,7 +107,7 @@ def data_management_menu():
     """
     options_dict = {'coalate_data_custom_interval': coalate_data,
                     'coalate_all_data': coalate_all_data,
-                    'clean_data': print_pizza_time,
-                    'join_attributes': print_pizza_time}
+                    'join_attributes': join_attributes_to_items,
+                    'clean_data': print_pizza_time}
     basic_menu(options_dict, back=True)
     return True

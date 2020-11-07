@@ -16,7 +16,7 @@ class PerceptiveAncestorSpider(AncestorSpider):
     def __init__(self, **kwargs):
 
         super().__init__(**kwargs)
-        self.driver = webdriver.Chrome(executable_path="{}/spiders/AncestorSpider/chromedriver.exe".format(os.getcwd()))
+        self.driver = webdriver.Chrome(executable_path="HousingPriceScraper/HousingPriceScraper/spiders/AncestorSpider/chromedriver.exe")
 
     def get_url(self, response):
         """
@@ -188,4 +188,3 @@ class PerceptiveAncestorSpider(AncestorSpider):
                 keep_scrolling = False
             else:
                 current_bottom = new_bottom
-

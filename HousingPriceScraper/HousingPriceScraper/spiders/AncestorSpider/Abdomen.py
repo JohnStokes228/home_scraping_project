@@ -121,20 +121,21 @@ class SpiderMethods:
                     output_dict[attr_list[0]].append(soup.find_all(attr_list[1], attrs=attr_list[4])[attr_list[2]][attr_list[3]])
         return output_dict
 
-    def update_recent_urls(self, urls_list):
+    def update_urls_config(self, urls_list, config='recent'):
         """
-        function to append the most recently discovered urls to recent_urls.json config
+        function to append some urls list to a given config file. most likely to be used for recent urls
 
         :param urls_list: a list of scraped attribute level urls
-        :return: updates /configs/input_urls/recent_urls.json
+        :param config: indicates which config file needs updating
+        :return: updates /configs/input_urls/CONFIG_urls.json
         """
-        with open('configs/input_urls/recent_urls.json') as recent_urls_json:
+        with open('HousingPriceScraper/HousingPriceScraper/configs/input_urls/{}_urls.json'.format(config)) as recent_urls_json:
             recent_dict = json.load(recent_urls_json)
         spider_name = '{}-attributes'.format(self.name.rsplit('-', 1)[0])
-        if spider_name in recent_dict:
+        if spider_name in recent_dict and config != 'missed':
             recent_dict[spider_name] = list(set(recent_dict[spider_name] + urls_list))
         else:
             recent_dict[spider_name] = urls_list
-        with open('configs/input_urls/recent_urls.json', 'w') as fp:
+        with open('HousingPriceScraper/HousingPriceScraper/configs/input_urls/{}_urls.json'.format(config), 'w') as fp:
             json.dump(recent_dict, fp, sort_keys=True, indent=4)
-        print('recent_urls for {} updated'.format(self.name))
+        print('{}_urls for {} updated'.format(config, self.name))

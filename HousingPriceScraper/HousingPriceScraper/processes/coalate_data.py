@@ -1,14 +1,12 @@
 """
 function suite to coalate jsons into meaningful data.
 
-TODO - write cleaning methods - does it not make sense to build a separate cleaning pipeline somewhere?
-     - yeah i think cleaning and classifying should be its own follow on project
-     - rewrite method for joining attribute to item data such that it is more robust.
+TODO - rewrite method for joining attribute to item data such that it is more robust.
 """
 import os
 import pandas as pd
 from HousingPriceScraper.HousingPriceScraper.functions.menus import basic_menu, select_date_interval_menu, basic_menu_non_functional
-from HousingPriceScraper.HousingPriceScraper.functions.basic_functions import print_pizza_time, date_today
+from HousingPriceScraper.HousingPriceScraper.functions.basic_functions import date_today
 from HousingPriceScraper.HousingPriceScraper.processes.run_scrapers import find_visible_projects
 from HousingPriceScraper.HousingPriceScraper.functions.data_management import jsons_to_csv
 from HousingPriceScraper.HousingPriceScraper.spiders.SpiderGroups.dummy_spiders import *
@@ -99,6 +97,16 @@ def join_attributes_to_items():
     return True
 
 
+def clean_data_func():
+    """
+    it might do something some day
+
+    :return: just type shit
+    """
+    print('there is no cleaning or classifying to be done here... bitch')
+    return True
+
+
 def data_management_menu():
     """
     menu options for the data management function suite.
@@ -108,6 +116,6 @@ def data_management_menu():
     options_dict = {'coalate_data_custom_interval': coalate_data,
                     'coalate_all_data': coalate_all_data,
                     'join_attributes': join_attributes_to_items,
-                    'clean_data': print_pizza_time}
+                    'clean_data': clean_data_func}
     basic_menu(options_dict, back=True)
     return True

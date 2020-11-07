@@ -15,10 +15,6 @@ from HousingPriceScraper.HousingPriceScraper.spiders.AncestorSpider.HiveMind imp
 class AncestorSpider(scrapy.Spider, SpiderMethods, HiveMind):
 
     name = None
-    item_data = []
-    attribute_data = []
-    requests = []
-    responses = []
     custom_settings = {'CONCURRENT_REQUESTS': 50,
                        'COOKIES_ENABLED': False,
                        'DOWNLOAD_DELAY': 0.3,
@@ -30,7 +26,6 @@ class AncestorSpider(scrapy.Spider, SpiderMethods, HiveMind):
                                                   'random_useragent.RandomUserAgentMiddleware': 400},
                        'USER_AGENT_LIST': 'HousingPriceScraper/HousingPriceScraper/configs/user_agents_list.txt'
                        }
-    data_path = 'HousingPriceScraper/HousingPriceScraper/data/raw_data/{}/{}'.format(name, date_today())
 
     def start_requests(self):
         """
@@ -45,6 +40,7 @@ class AncestorSpider(scrapy.Spider, SpiderMethods, HiveMind):
             urls_dict = json.load(input_urls_json)
         input_urls = urls_dict[self.name]
         for url in input_urls:
+            self.requests.append(url)
             if hasattr(self, 'traverse_site'):
                 yield scrapy.Request(url=url, meta=meta, callback=self.traverse_site)
             elif hasattr(self, 'get_items'):
@@ -87,6 +83,7 @@ class AncestorSpider(scrapy.Spider, SpiderMethods, HiveMind):
         :return: proper finish
         """
         self.save_log()
+        self.update_urls_config([i for i in self.requests if i not in self.responses], config='missed')
         if hasattr(self, 'driver'):
             self.driver.quit()
         if len(self.item_data) > 0:

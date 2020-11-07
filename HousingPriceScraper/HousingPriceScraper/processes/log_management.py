@@ -2,13 +2,13 @@
 the next (final?) menu option to be added to the project, will include options for tracking content of logs
 over time.
 
-TODO - write method to highlight potential issues for select spiders
 """
 import os
 import json
 from datetime import datetime
+from statistics import mean
+from math import ceil
 from HousingPriceScraper.HousingPriceScraper.functions.menus import basic_menu, basic_menu_non_functional
-from HousingPriceScraper.HousingPriceScraper.functions.basic_functions import print_pizza_time
 from HousingPriceScraper.HousingPriceScraper.processes.run_scrapers import find_visible_projects
 
 
@@ -84,7 +84,7 @@ def full_cleanse():
     if len(logs_to_delete) > 0:
         for log in logs_to_delete:
             os.remove('HousingPriceScraper/HousingPriceScraper/data/scrape_logs/{}'.format(log))
-        print('Deleted selected log files')
+            print('Deleted file {}'.format(log))
     else:
         print('No logs to delete for chosen selection')
     return True
@@ -103,13 +103,66 @@ def clear_logs():
     return True
 
 
+def get_average(log_dict, numeric_var, max_date):
+    """
+    dictionary gets average of numeric variable not including most recent value
+
+    :param log_dict: dictionary of dated logs
+    :param numeric_var: the numeric variable to be compared
+    :param max_date: the maximum date key for log_dict
+    :return: integer difference between recent value and average
+    """
+    past_vals = [ceil(log_dict[date][numeric_var] / log_dict[date]['no_runs']) for date in log_dict.keys() if date != max_date]
+    if len(past_vals) > 1:
+        mean_past_vals = mean(past_vals)
+    elif len(past_vals) == 1:
+        mean_past_vals = past_vals[0]
+    else:
+        mean_past_vals = 0
+    return ceil(mean_past_vals)
+
+
+def highlights():
+    """
+    highlight issues from recent run
+
+    :return: probably prints some info of interest
+    """
+    logs_to_check = get_select_log_files()
+    if len(logs_to_check) > 0:
+        for log in logs_to_check:
+            with open('HousingPriceScraper/HousingPriceScraper/data/scrape_logs/{}'.format(log)) as log_json:
+                log_dict = json.load(log_json)
+            print('\nLOG {}:'.format(log.replace('.json', '')))
+            dates = [datetime.strptime(date, '%d%m%Y') for date in log_dict.keys()]
+            max_date = max(dates).strftime('%d%m%Y')
+            min_date = min(dates).strftime('%d%m%Y')
+            print('The most recent run for this spider occurred on {}, when {} runs occurred'.format(max_date, log_dict[max_date]['no_runs']))
+            if log_dict[max_date]['no_length_fails'] != 0:
+                print('There were {} instances of mismatched variable lengths during runs on this date'.format(log_dict[max_date]['no_length_fails']))
+            if log_dict[max_date]['no_NULL_fails'] != 0:
+                print('{} pages scraped yielded at least one NULL value during runs on this date'.format(log_dict[max_date]['no_NULL_fails']))
+            if len(log_dict[max_date]['missed_urls']) != 0:
+                print('There were {} requested urls which yielded no response during runs on this date'.format(len(log_dict[max_date]['missed_urls'])))
+            movement = get_average(log_dict, 'no_pages_scraped', max_date)
+            print('The most recent run on {} scraped {} pages, compared to a historic average of {}'.format(max_date, log_dict[max_date]['no_pages_scraped'], movement))
+            if len(dates) > 1:
+                previous_date = sorted(dates)[-2].strftime('%d%m%Y')
+                print('The second most recent run on {} scraped {} pages'.format(previous_date, log_dict[previous_date]['no_pages_scraped']))
+            print('The earliest recorded run on {} scraped {} pages'.format(min_date, log_dict[min_date]['no_pages_scraped']))
+    else:
+        print('No logs to check for selected spiders!')
+    print('\n')
+    return True
+
+
 def log_management_menu():
     """
     entry way into the wonderous world of my garbage low level logging.
 
     :return: it'll give you a menu to click through like the bitch you are
     """
-    options_dict = {'highlight_issues': print_pizza_time,
+    options_dict = {'highlight_issues': highlights,
                     'clean_logs': clear_logs}
     basic_menu(options_dict, back=True)
     return True

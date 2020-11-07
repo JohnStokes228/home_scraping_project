@@ -11,6 +11,7 @@ class DummyBooksBaseSpider(AncestorSpider):
 
     def traverse_site(self, response):
 
+        self.responses.append(response.url)
         pagination_information = self.scrape_to_attribute(response, '//form/strong', 'text')
         number_of_pages = int(pagination_information[0]) / int(pagination_information[2])
         for i in range(1, int(number_of_pages)):
@@ -25,7 +26,7 @@ class DummyBooksBaseSpider(AncestorSpider):
                     ['url', 'a', 1, 'href']]
         test = self.scrape_product_box(response, '//article', elements)
         test['page_order'] = list(range(len(test['name'])))
-        self.update_recent_urls(['http://books.toscrape.com/catalogue/{}'.format(url) for url in test['url']])
+        self.update_urls_config(['http://books.toscrape.com/catalogue/{}'.format(url) for url in test['url']])
         self.validate_save_scraped_data(response.url, test, date_vars=True, attrs=False)
         self.responses.append(response.url)
         if hasattr(self, 'get_attributes'):

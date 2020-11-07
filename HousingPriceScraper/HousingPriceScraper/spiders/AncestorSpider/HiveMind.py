@@ -1,7 +1,6 @@
 """
 the shared memory of the spiders. My intention is to have a single, cleanable log per spider but we'll see how that
-goes. I wonder if QAing functions should be covered here too? Yes, yes they should
-
+goes.
 
 """
 from HousingPriceScraper.HousingPriceScraper.functions.basic_functions import date_today
@@ -11,14 +10,6 @@ import json
 
 
 class HiveMind:
-
-    scrape_log = {date_today(): {'no_length_fails': 0,
-                                 'no_NULL_fails': 0,
-                                 'no_runs': 0,
-                                 'no_response_urls': 0,
-                                 'no_request_urls': 0,
-                                 'missed_urls': [],
-                                 'no_pages_scraped': 0}}
 
     def get_log(self):
         """

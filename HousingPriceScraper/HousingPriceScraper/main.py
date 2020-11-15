@@ -6,7 +6,8 @@ generic code i also want to use elsewhere. This decision also allows us to delay
 such a time as it is unavoidable, thus dodging any nuisance that that usually causes.
 
 """
-from HousingPriceScraper.HousingPriceScraper.functions.menus import basic_menu, project_visibility_menu
+from HousingPriceScraper.HousingPriceScraper.functions.menus import basic_menu
+from HousingPriceScraper.HousingPriceScraper.processes.set_settings import settings_menu
 from HousingPriceScraper.HousingPriceScraper.processes.run_scrapers import scrape_menu
 from HousingPriceScraper.HousingPriceScraper.processes.coalate_data import data_management_menu
 from HousingPriceScraper.HousingPriceScraper.processes.log_management import log_management_menu
@@ -14,8 +15,8 @@ from HousingPriceScraper.HousingPriceScraper.functions.basic_functions import pr
 
 
 if __name__ == '__main__':
-    options_dict = {'set_visible_projects': project_visibility_menu,
-                    'scraping_main': scrape_menu,
+    options_dict = {'scraping_main': scrape_menu,
+                    'project_settings_main': settings_menu,
                     'data_management_main': data_management_menu,
                     'log_inspection_main': log_management_menu,
                     'print_pizza_time': print_pizza_time}

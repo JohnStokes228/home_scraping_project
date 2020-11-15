@@ -27,6 +27,17 @@ class AncestorSpider(scrapy.Spider, SpiderMethods, HiveMind):
                        'USER_AGENT_LIST': 'HousingPriceScraper/HousingPriceScraper/configs/user_agents_list.txt'
                        }
 
+    def get_input_urls(self):
+        """
+        get the input urls list for a given spider
+
+        :return: a list of input urls taken from the chosen_urls config file
+        """
+        with open('HousingPriceScraper/HousingPriceScraper/configs/chosen_urls.json') as input_urls_json:
+            urls_dict = json.load(input_urls_json)
+        input_urls = urls_dict[self.name]
+        return input_urls
+
     def start_requests(self):
         """
         takes input urls and feeds them to the parse method.
@@ -36,9 +47,7 @@ class AncestorSpider(scrapy.Spider, SpiderMethods, HiveMind):
         meta = {'dont_redirect': True,
                 'handle_httpstatus_list': [301, 302]}
         check_make_dir(folder=self.data_path)
-        with open('HousingPriceScraper/HousingPriceScraper/configs/chosen_urls.json') as input_urls_json:
-            urls_dict = json.load(input_urls_json)
-        input_urls = urls_dict[self.name]
+        input_urls = self.get_input_urls()
         for url in input_urls:
             self.requests.append(url)
             if hasattr(self, 'traverse_site'):
@@ -83,7 +92,8 @@ class AncestorSpider(scrapy.Spider, SpiderMethods, HiveMind):
         :return: proper finish
         """
         self.save_log()
-        self.update_urls_config([i for i in self.requests if i not in self.responses], config='missed')
+        input_urls = self.get_input_urls()
+        self.update_urls_config([i for i in input_urls if i not in self.responses], config='missed')
         if hasattr(self, 'driver'):
             self.driver.quit()
         if len(self.item_data) > 0:

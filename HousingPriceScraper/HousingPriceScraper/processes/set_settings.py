@@ -38,36 +38,7 @@ def remove_missed_from_default():
             defaults_dict[spider] = [i for i in defaults_dict[spider] if i not in missed_urls[spider]]
     with open('HousingPriceScraper/HousingPriceScraper/configs/input_urls/defaults.json', 'w') as fp:
         json.dump(defaults_dict, fp, sort_keys=True, indent=4)
-    print('recently missed urls removed from default config\n')
-
-
-def create_missed_config():
-    """
-    function which creates a whole new config file to store recently missed urls in
-
-    :return: new config is created
-    """
-    missed_urls = get_recent_missed()
-    config_name = 'missed_urls'
-    config_desc = 'urls missed from most recent scrapes'
-    with open('HousingPriceScraper/HousingPriceScraper/configs/input_urls/{}.json'.format(config_name), 'w') as fp:
-        json.dump(missed_urls, fp, sort_keys=True, indent=4)
-    with open('HousingPriceScraper/HousingPriceScraper/configs/input_url_config_descriptions.txt', 'a') as input_descs:
-        input_descs.write('\n{}: {}'.format(config_name, config_desc))
-    print('\nSuccessfully saved missed urls to new config: missed_urls.json')
-
-
-def missed_config_manager():
-    """
-    function to deal with the missed urls in the logs
-
-    :return: list of options
-    """
-    options = {'create_missed_config': create_missed_config,
-               'remove_missed_from_default': remove_missed_from_default
-               }
-    basic_menu(options, back=True)
-    return True
+    print('recently missed urls removed from default urls config\n')
 
 
 def recent_config_manager():
@@ -94,7 +65,7 @@ def settings_menu():
     """
     options = {'set_visible_projects': project_visibility_menu,
                'recent_urls_options': recent_config_manager,
-               'missed_urls_options': missed_config_manager
+               'remove_missed_from_defaults': remove_missed_from_default
                }
     basic_menu(options, back=True)
     return True

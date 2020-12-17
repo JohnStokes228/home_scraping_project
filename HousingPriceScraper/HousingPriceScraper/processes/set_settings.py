@@ -19,7 +19,7 @@ def get_recent_missed():
         with open('HousingPriceScraper/HousingPriceScraper/data/scrape_logs/{}'.format(log_file)) as log_json:
             log_dict = json.load(log_json)
         max_date = max([datetime.strptime(i, '%d%m%Y') for i in log_dict.keys()]).strftime('%d%m%Y')
-        if log_dict['missed_urls'] != ['']:
+        if log_dict[max_date]['missed_urls'] != ['']:
             missed_urls[log_file.replace('.json', '')] = log_dict[max_date]['missed_urls']
     return missed_urls
 
@@ -39,6 +39,7 @@ def remove_missed_from_default():
     with open('HousingPriceScraper/HousingPriceScraper/configs/input_urls/defaults.json', 'w') as fp:
         json.dump(defaults_dict, fp, sort_keys=True, indent=4)
     print('recently missed urls removed from default urls config\n')
+    return True
 
 
 def recent_config_manager():

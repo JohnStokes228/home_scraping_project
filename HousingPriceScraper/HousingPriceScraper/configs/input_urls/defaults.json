@@ -1,4 +1,7 @@
 {
+    "foy-williams-items": [
+        "https://www.foywilliams.com/properties-for-sale/"
+    ],
     "dummy-books-attributes": [
         "http://books.toscrape.com/catalogue/the-marriage-of-opposites_759/index.html",
         "http://books.toscrape.com/catalogue/the-white-queen-the-cousins-war-1_768/index.html",

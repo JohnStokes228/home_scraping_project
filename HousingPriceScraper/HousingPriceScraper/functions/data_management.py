@@ -6,6 +6,7 @@ from pathlib import Path
 import json
 import itertools
 import time
+from unidecode import unidecode
 import pandas as pd
 from HousingPriceScraper.HousingPriceScraper.functions.basic_functions import date_today, current_time
 
@@ -19,6 +20,26 @@ def check_make_dir(folder):
     """
     Path(folder).mkdir(parents=True, exist_ok=True)
     print('directory ready at {}'.format(folder))
+
+
+def clean_scraped_data(data_dict):
+    """
+    cleans the values in lists by: removing £ sign to avoid it getting decoded
+                                   replace special characters with closest latin characters
+                                   l and r stripping
+                                   removing multiple whitespaces
+                                   removing line breaks and tabs
+    :param data_dict: standard python dictionary containing data to be cleaned
+    :return: dictionary whose values have been cleaned
+    """
+    for key in data_dict.keys():
+        data_dict[key] = [val.replace('£', '') for val in data_dict[key]]
+        data_dict[key] = [unidecode(val) for val in data_dict[key]]
+        data_dict[key] = [val.lstrip().rstrip() for val in data_dict[key]]
+        data_dict[key] = [' '.join(val.split()) for val in data_dict[key]]
+
+    return data_dict
+
 
 
 def save_dict_to_json(data_dict, file_path, file_name, date_vars=True, attrs=False):
@@ -36,6 +57,9 @@ def save_dict_to_json(data_dict, file_path, file_name, date_vars=True, attrs=Fal
     if date_vars:
         data_dict['date_scraped'] = [date_today()] * len(data_dict[list(data_dict.keys())[0]])
         data_dict['time_scraped'] = [current_time()] * len(data_dict[list(data_dict.keys())[0]])
+
+    data_dict = clean_scraped_data(data_dict)
+
     if not attrs:
         file_name = '{}_{}_{}.json'.format(date_today(), current_time(), file_name)
     else:

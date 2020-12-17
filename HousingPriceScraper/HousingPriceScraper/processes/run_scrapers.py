@@ -10,6 +10,7 @@ from HousingPriceScraper.HousingPriceScraper.functions.basic_functions import en
 from HousingPriceScraper.HousingPriceScraper.functions.data_management import read_txt_to_list
 from HousingPriceScraper.HousingPriceScraper.functions.menus import basic_menu, select_spiders, set_config
 from HousingPriceScraper.HousingPriceScraper.spiders.SpiderGroups.dummy_spiders import *
+from HousingPriceScraper.HousingPriceScraper.spiders.SpiderGroups.property_spiders import *
 
 
 def simultaneous_run(list_of_spiders):

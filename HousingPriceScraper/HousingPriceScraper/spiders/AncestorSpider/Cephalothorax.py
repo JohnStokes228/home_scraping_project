@@ -85,7 +85,7 @@ class PerceptiveAncestorSpider(AncestorSpider):
         :return: list of attributes
         """
 
-        elements = self.driver_get_element(target_path, multiple, xpath)
+        elements = self.driver_get_element(target_path, xpath=xpath, multiple=multiple)
         attributes = self.driver_elements_to_attribute(elements, attribute)
         return attributes
 

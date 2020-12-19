@@ -41,7 +41,6 @@ def clean_scraped_data(data_dict):
     return data_dict
 
 
-
 def save_dict_to_json(data_dict, file_path, file_name, date_vars=True, attrs=False):
     """
     you'll never guess what this function does :O

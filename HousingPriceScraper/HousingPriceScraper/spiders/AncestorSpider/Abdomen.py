@@ -1,8 +1,7 @@
 """
 the body of the spider, containing the scraping methods. html parsing is currently handled by beautiful soup.
 
-TODO - investigate selenium: might be worth having another class for driver usage if its going to be needed?
-     - element_to_attribute may need further updates as the find() method might be a bit ambiguous, we'll have to see
+TODO - element_to_attribute may need further updates as the find() method might be a bit ambiguous, we'll have to see
        how it behaves in practice
      - its likely that non identically structured websites may break a few of these methods we'll have to see as we
        get to them

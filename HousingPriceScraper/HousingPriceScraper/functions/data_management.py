@@ -22,6 +22,23 @@ def check_make_dir(folder):
     print('directory ready at {}'.format(folder))
 
 
+def join_attr_lists(data_dictionary, attrs):
+    """
+    join attribute data lists into a single comma separated string
+
+    :param data_dictionary: dictionary of scraped attribute data
+    :param attrs: boolean, set True to do the thing, False to just return the input
+    :return: dictionary of attribute data where each value is a list of length 1
+    """
+    if attrs:
+        for var in data_dictionary.keys():
+            if len(data_dictionary[var]) == 0:
+                data_dictionary[var] = [""]
+            data_dictionary[var] = [', '.join(data_dictionary[var])]
+
+    return data_dictionary
+
+
 def clean_scraped_data(data_dict):
     """
     cleans the values in lists by: removing £ sign to avoid it getting decoded

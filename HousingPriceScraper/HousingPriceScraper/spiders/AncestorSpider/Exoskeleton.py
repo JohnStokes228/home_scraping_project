@@ -7,7 +7,7 @@ TODO - want a method to save scraped data at set size intervals to avoid too muc
 """
 import scrapy
 import json
-from HousingPriceScraper.HousingPriceScraper.functions.data_management import check_make_dir, date_today, save_dict_to_json, merge_dictionaries
+from HousingPriceScraper.HousingPriceScraper.functions.data_management import check_make_dir, date_today, save_dict_to_json, merge_dictionaries, join_attr_lists
 from HousingPriceScraper.HousingPriceScraper.spiders.AncestorSpider.Abdomen import SpiderMethods
 from HousingPriceScraper.HousingPriceScraper.spiders.AncestorSpider.HiveMind import HiveMind
 
@@ -69,6 +69,7 @@ class AncestorSpider(scrapy.Spider, SpiderMethods, HiveMind):
         :param attrs: boolean is the data from attribute level scrape
         :return: either appends data to spiders data attribute, or saves it as a json
         """
+        data_dictionary = join_attr_lists(data_dictionary, attrs)
         length_check = self.variable_length_check(data_dictionary, url)
         null_check = self.null_value_check(data_dictionary)
         self.increment_numeric()

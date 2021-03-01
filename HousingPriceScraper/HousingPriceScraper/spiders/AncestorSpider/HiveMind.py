@@ -11,6 +11,8 @@ import json
 
 class HiveMind:
 
+    start_date = date_today()
+
     def get_log(self):
         """
         checks for the existance of a log file for a given spider and reads it in if needed
@@ -52,7 +54,7 @@ class HiveMind:
             return True
         else:
             print('LOGGER FAIL: number of attributes per variable is inconsistent from url:\n{}'.format(url))
-            self.scrape_log[date_today()]['no_length_fails'] += 1
+            self.scrape_log[self.start_date]['no_length_fails'] += 1
             return False
 
     def null_value_check(self, data_dict):
@@ -62,12 +64,12 @@ class HiveMind:
         :param data_dict: dictionary of scraped data
         :return: True if pass, False if fail
         """
-        start_nulls = self.scrape_log[date_today()]['no_NULL_fails']
+        start_nulls = self.scrape_log[self.start_date]['no_NULL_fails']
         for key in data_dict.keys():
             if None in data_dict[key]:
                 print('LOGGER FAIL: found NoneTypeObj in variable {}'.format(key))
-                self.scrape_log[date_today()]['no_NULL_fails'] += 1
-        if start_nulls == self.scrape_log[date_today()]['no_NULL_fails']:
+                self.scrape_log[self.start_date]['no_NULL_fails'] += 1
+        if start_nulls == self.scrape_log[self.start_date]['no_NULL_fails']:
             print('LOGGER PASS: no NULLs present in data')
             return True
         else:
@@ -80,7 +82,7 @@ class HiveMind:
         :param numeric: name of numeric variable to increment
         :return: increments don't you get it
         """
-        self.scrape_log[date_today()][numeric] += 1
+        self.scrape_log[self.start_date][numeric] += 1
         print('LOGGER: added 1 to {}'.format(numeric))
 
     def response_url_check(self):
@@ -89,12 +91,12 @@ class HiveMind:
 
         :return:
         """
-        self.scrape_log[date_today()]['no_response_urls'] = len(self.responses)
-        self.scrape_log[date_today()]['no_request_urls'] = len(self.requests)
-        self.scrape_log[date_today()]['missed_urls'] = [i for i in self.requests if i not in self.responses]
-        if len(self.scrape_log[date_today()]['missed_urls']) > 0:
+        self.scrape_log[self.start_date]['no_response_urls'] = len(self.responses)
+        self.scrape_log[self.start_date]['no_request_urls'] = len(self.requests)
+        self.scrape_log[self.start_date]['missed_urls'] = [i for i in self.requests if i not in self.responses]
+        if len(self.scrape_log[self.start_date]['missed_urls']) > 0:
             print('LOGGER FAIL: there were {} urls not successfully scraped, including:')
-            for url in self.scrape_log[date_today()]['missed_urls']:
+            for url in self.scrape_log[self.start_date]['missed_urls']:
                 print('\t- {}'.format(url))
         else:
             print('LOGGER PASS: all requests yielded data')

@@ -58,3 +58,20 @@ class CriterionCollectionFull(CriterionCollectionBaseSpider, CriterionCollection
                                  'missed_urls': [],
                                  'no_pages_scraped': 0}}
     data_path = '{}/{}/{}'.format(group_path, name.rsplit('-', 1)[0], date_today())
+
+
+class CriterionReviews(CriterionReviewSpider):
+
+    name = 'criterion-review-items'
+    item_data = []
+    attribute_data = []
+    requests = []
+    responses = []
+    scrape_log = {date_today(): {'no_length_fails': 0,
+                                 'no_NULL_fails': 0,
+                                 'no_runs': 0,
+                                 'no_response_urls': 0,
+                                 'no_request_urls': 0,
+                                 'missed_urls': [],
+                                 'no_pages_scraped': 0}}
+    data_path = '{}/{}/{}'.format(group_path, name.rsplit('-', 1)[0], date_today())

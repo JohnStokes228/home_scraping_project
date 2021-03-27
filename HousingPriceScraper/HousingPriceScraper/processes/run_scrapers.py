@@ -2,16 +2,17 @@
 file containing code to run spiders, called from main.py if run_scrape is selected.
 
 TODO - write multiprocessing implementation - crochet/pathos worked before but is there a more elegant solution?
-     - !!import spider settings for use in crawler process!! <- legit this one is probs a major deal rn :O
-     - refactor set_config and manage_recent_urls into a single 'url_config_manager' option, with both options within
 """
 import inspect
 import os
 from scrapy.crawler import CrawlerProcess
 from HousingPriceScraper.HousingPriceScraper.functions.basic_functions import end_process
 from HousingPriceScraper.HousingPriceScraper.functions.data_management import read_txt_to_list
-from HousingPriceScraper.HousingPriceScraper.functions.menus import basic_menu, select_spiders, config_manager
+from HousingPriceScraper.HousingPriceScraper.functions.menus import basic_menu, select_spiders, set_config
 from HousingPriceScraper.HousingPriceScraper.spiders.SpiderGroups.dummy_spiders import *
+from HousingPriceScraper.HousingPriceScraper.spiders.SpiderGroups.property_spiders import *
+from HousingPriceScraper.HousingPriceScraper.spiders.SpiderGroups.film_spiders import *
+from HousingPriceScraper.HousingPriceScraper.spiders.SpiderGroups.favour_spiders import *
 
 
 def simultaneous_run(list_of_spiders):
@@ -80,6 +81,6 @@ def scrape_menu():
     :return: takes you through the scraping menu with the #bois
     """
     options_dict = {'run_scrape': run_scrapers,
-                    'url_config_manager': config_manager}
+                    'set_run_config': set_config}
     basic_menu(options_dict, back=True)
     return True

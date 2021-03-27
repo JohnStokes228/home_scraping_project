@@ -4,10 +4,10 @@ includes Selenium features, to allow the spider to 'see' the website and, y'know
 """
 from selenium import webdriver
 from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
 from selenium.common.exceptions import NoSuchElementException
 from random import randint
 import time
-import os
 from HousingPriceScraper.HousingPriceScraper.spiders.AncestorSpider.Exoskeleton import AncestorSpider
 
 
@@ -85,7 +85,7 @@ class PerceptiveAncestorSpider(AncestorSpider):
         :return: list of attributes
         """
 
-        elements = self.driver_get_element(target_path, multiple, xpath)
+        elements = self.driver_get_element(target_path, xpath=xpath, multiple=multiple)
         attributes = self.driver_elements_to_attribute(elements, attribute)
         return attributes
 
@@ -148,15 +148,34 @@ class PerceptiveAncestorSpider(AncestorSpider):
                     output_dict[target_element[0]].append(attrs[0])
         return output_dict
 
-    def find_press_button(self, xpath):
+    def centralise_driver_on_element(self, element):
+        """
+        centralises the chrome driver window on a located HTML element. code taken from:
+        https://stackoverflow.com/questions/41744368/scrolling-to-element-using-webdriver
+
+        :param element: html element located by selenium
+        :return: driver window is centered on the element, typically this will be used to
+                 allow buttons to be pressed if they aren't visible initially
+        """
+        desired_y = (element.size['height'] / 2) + element.location['y']
+        window_h = self.driver.execute_script('return window.innerHeight')
+        window_y = self.driver.execute_script('return window.pageYOffset')
+        current_y = (window_h / 2) + window_y
+        scroll_y_by = desired_y - current_y
+        self.driver.execute_script("window.scrollBy(0, arguments[0]);", scroll_y_by)
+
+    def find_press_button(self, xpath, centralise=False):
         """
         find a button via xpath and then click it.
 
         :param xpath: xpath for the button. I see no need for css to be an option ever here
+        :param centralise: boolean indicating if the driver should be centralised on the button first
         :return: the button is clicked you hear me!! but legit though nothing is returned here calm down pls
         """
         try:
             button = self.driver_get_element(xpath, multiple=False)
+            if centralise:
+                self.centralise_driver_on_element(button)
             time.sleep(randint(1, 3))
             try:
                 button.click()
@@ -167,6 +186,23 @@ class PerceptiveAncestorSpider(AncestorSpider):
         except NoSuchElementException:
             print('button not found!')
             return False
+
+    def type_in_textbox(self, textbox_xpath, fill_string, enter=True):
+        """
+        fuction to type text into a textbox i.e. to text search for something
+
+        :param textbox_xpath: xpath to the textbox element
+        :param fill_string: desired string to input in the box
+        :param enter: boolean indicating whether or not to hit enter after typing
+        :return: the textbox gets filled. I might make it return a boolean i dunno yet
+        """
+        textbox = self.driver_get_element(textbox_xpath, multiple=False)
+        time.sleep(randint(1, 3))
+        textbox.send_keys(fill_string)
+        if enter:
+            time.sleep(1)
+            textbox.send_keys(Keys.ENTER)
+        print('textbox filled successfully!')
 
     def scroll_to_bottom(self, number_of_stops=3):
         """

@@ -15,7 +15,8 @@ def print_pizza_time():
 
     :return: pizza time!
     """
-    print('pizza time!')
+    print('pizza time!\n')
+    return True
 
 
 def date_today():

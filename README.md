@@ -1,24 +1,19 @@
 # home_scraping_project
-home made web scraping project intended to allow for robust and scalable scraping of local housing market websites. 
 
-current progress tracked at:
-https://johnno.atlassian.net/jira/software/projects/WSH/boards/1
+home made web scraping project initially designed for scraping house prices (hence all the project names) however they mostly block scrapers from those sites and i dont want to be too norty at the moment so its barely been used for this purpose. instead, I've been using it to fuel my other projects. The code is a bit of a toy in that its full of (terribly written spaghetti code) text menus with loads of options that probably just wont get used but it was a fun and educational experience to build from scratch so ack well. 
 
-currently at v1, fairly happy with it here. theres deffo more that could be done but id rather that be informed by using it in situ for a bit and seeing what annoys me most rather than aribtrarily building from scratch.
+currently at v1, and waiting until its been used enough to determine what the most important next steps might be. most up to date branch is called 'V2_branch', I have no idea why. seems like the sort of joke I'd make though doesnt it. 
+  
+# To set up a new scraper
 
-to add a new spider:
+- create a spider in the spiders folder, it should inherit from either AncestorSpider, or, if it requires JavaScript interaction, PerceptiveAncestorSpider.
+- add a key / url list for the spider to configs/input_urls/defaults. you may also wish to add alternate configs either to existing config jsons, or create an entirely new one.
+- in 'SpiderGroups' folder, either create a new group or append your spider to an existing group. A new group should include a group_path variable to dictate where data from that groups spiders are saved.
+- make sure that the group file your spider is in is imported into processes/run_scrapers
+- when running the code be sure to set the available projects to include you current SpiderGroups, and be sure to select your URL configs - the new spider will not have any URLS unless you do this even if you only want to run default options
 
-- determine how deep into the website the spider needs to traverse, if it needs to crawl or can be put straight onto the page with data
-- for each destinct action the spider takes (traverse, product data, attribute data) determine if selenium is required or if scrapy can be used raw
-- build your spider inheriting from Ancestor Spider if no selenium is required, or from Perceptive Ancestor Spider if selenium is required.
-- once spider is written, add some urls for it into default_urls.json
-- create a new file in SpiderGroups folder, or add an instance of the spider into an existing one. this will attach the spider to a 'project'
-- if you created a new spider group file above, it will need to be imported into scraping_main.py, and a new project will need to be added to the visible projects list.txt file
-- hit play on the code, ensure the desired project is visible in the set visisble projects menu. set your chosen url config (reselect default here after every new spider is added).
-- run the sider
+your spider should then be ready to run.
 
-once a spider has been run at product level, the 'recent_urls' config will populated with urls which can then feed an attribute level scrape if you select recent urls as the run_config of choice. config manager has many options on other basic commands for things you can do with recent urls such as creating wholly new configs out of them.
-if you absolutely cant live with json data theres a data compilation module that can build a csv for you but Ive not tested it especially thoroughly and expect it will break since i don't personally see much use for it, its just there just in case.
+# config options
 
-
-
+# post scrape validation

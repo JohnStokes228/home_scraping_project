@@ -1,16 +1,13 @@
 """
 the body of the spider, containing the scraping methods. html parsing is currently handled by beautiful soup.
 
-TODO - investigate selenium: might be worth having another class for driver usage if its going to be needed?
-     - element_to_attribute may need further updates as the find() method might be a bit ambiguous, we'll have to see
-       how it behaves in practice
-     - its likely that non identically structured websites may break a few of these methods we'll have to see as we
-       get to them
+TODO - create scrape_image_to_jpeg method
 """
 import time
 import json
 from random import randint
 from bs4 import BeautifulSoup
+import pafy
 
 
 class SpiderMethods:
@@ -139,3 +136,20 @@ class SpiderMethods:
         with open('HousingPriceScraper/HousingPriceScraper/configs/input_urls/{}_urls.json'.format(config), 'w') as fp:
             json.dump(recent_dict, fp, sort_keys=True, indent=4)
         print('{}_urls for {} updated'.format(config, self.name))
+
+    def scrape_video_to_mp4(self, video_url, data_path):
+        """
+        function to scrape videos from their url path. might need ore wait times not sure yet.
+
+        :param video_url: a string describing the url to scrape
+        :param data_path: path to save the mp4
+        :return: an mp4 file is saved locally
+        """
+        time.sleep(randint(0, 3))
+        video = pafy.new(video_url)
+        best_resolution_video = video.getbest()
+        time.sleep(randint(0, 5))
+        best_resolution_video.download(data_path)
+
+    def scrape_image_to_jpeg(self):
+        pass

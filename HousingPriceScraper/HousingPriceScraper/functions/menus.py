@@ -287,23 +287,6 @@ def clear_recent_urls():
         json.dump(recent_dict, fp, sort_keys=True, indent=4)
 
 
-def config_manager():
-    """
-    function to refresh item urls for all? or maybe just specified spiders in a variety of ways
-
-    :return:
-    """
-
-    options = {'set_configs': set_config,
-               'append_recent_to_default': append_recent_urls,
-               'overwrite_default': replace_default_urls,
-               'create_new_config': create_new_config,
-               'clear_recent_urls': clear_recent_urls
-               }
-    basic_menu(options, back=True)
-    return True
-
-
 def select_date_interval_menu():
     """
     function allows user to inout start and end date to define an interval of dates

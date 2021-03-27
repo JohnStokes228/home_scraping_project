@@ -9,6 +9,7 @@ from datetime import datetime
 from statistics import mean
 from math import ceil
 from HousingPriceScraper.HousingPriceScraper.functions.menus import basic_menu, basic_menu_non_functional
+from HousingPriceScraper.HousingPriceScraper.functions.basic_functions import print_pizza_time
 from HousingPriceScraper.HousingPriceScraper.processes.run_scrapers import find_visible_projects
 
 
@@ -163,6 +164,7 @@ def log_management_menu():
     :return: it'll give you a menu to click through like the bitch you are
     """
     options_dict = {'highlight_issues': highlights,
+                    'create_missed_config': print_pizza_time,
                     'clean_logs': clear_logs}
     basic_menu(options_dict, back=True)
     return True

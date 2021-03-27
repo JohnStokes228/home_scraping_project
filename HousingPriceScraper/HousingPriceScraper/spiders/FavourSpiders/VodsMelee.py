@@ -20,18 +20,16 @@ class VodsMeleeBaseSpider(PerceptiveAncestorSpider):
             elements = [("tournament", "//tr/td[1]", "text"),
                         ("left_player", "//tr/td[2]/a/span/b[1]", "text"),
                         ("right_player", "//tr/td[2]/a/span/b[2]", "content"),
-                        ("left_character", "//tr/td[2]/a/span/img[1]", "src"),
-                        ("right_character", "//tr/td[2]/a/span/img[last()]", "src"),
+                        ("characters", "//tr/td[2]/a/span/img", "src"),
+                        ("right_characters", " //tr/td[2]/a/span/b[2]/following-sibling::img", "src"),
                         ("video_url", "//tr/td[3]/a", "href"),
                         ("match_type", "//tr/td[4]", "text"),
                         ("round", "//tr/td[5]", "text")]
-            #  left/right character don't allow players to have two characters which it looks like they sometimes can :O
             elements = self.driver_scrape_multiple_to_attribute(elements)
-            elements['left_character'] = [character.split('-')[1].split('.')[0] for character in elements['left_character']]
-            elements['right_character'] = [character.split('-')[1].split('.')[0] for character in elements['right_character']]
             self.validate_save_scraped_data(response.url, elements, date_vars=False)
             btn = self.find_press_button("//a[@title='Go to next page']", centralise=True)
             self.responses.append(response.url)
+            
             if hasattr(self, 'get_attributes'):
                 for url in elements['video_url']:
                     yield scrapy.Request(url=url, callback=self.get_attributes)
@@ -43,8 +41,16 @@ class VodsMeleeBaseSpider(PerceptiveAncestorSpider):
 class VodsMeleeAttrSpider(AncestorSpider):
 
     def get_attributes(self, response):
+
+        self.responses.append(response.url)
+
         video_file = self.scrape_to_attribute(response, '///a[@aria-label="Watch on YouTube"]', 'href')
         check_make_dir(self.data_path+'/videos')
         self.scrape_video_to_mp4(video_file, self.data_path+'/videos')
+
+        video_title = self.scrape_to_attribute(response, '//div[@class="block-title"]', 'text')
+        self.validate_save_scraped_data(response.url, video_title, date_vars=False, attrs=True)
+
+        self.requests.append(response.url)
 
 

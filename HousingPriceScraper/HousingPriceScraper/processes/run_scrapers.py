@@ -12,6 +12,7 @@ from HousingPriceScraper.HousingPriceScraper.functions.menus import basic_menu, 
 from HousingPriceScraper.HousingPriceScraper.spiders.SpiderGroups.dummy_spiders import *
 from HousingPriceScraper.HousingPriceScraper.spiders.SpiderGroups.property_spiders import *
 from HousingPriceScraper.HousingPriceScraper.spiders.SpiderGroups.film_spiders import *
+from HousingPriceScraper.HousingPriceScraper.spiders.SpiderGroups.favour_spiders import *
 
 
 def simultaneous_run(list_of_spiders):

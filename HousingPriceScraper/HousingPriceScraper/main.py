@@ -5,6 +5,8 @@ I've decided to keep this file as clean as possible for legibility reasons / bec
 generic code i also want to use elsewhere. This decision also allows us to delay the activation of the reactor until
 such a time as it is unavoidable, thus dodging any nuisance that that usually causes.
 
+TODO - add options to scrape video files / image files
+     - should these be separate options on the menu? or just different spider types?
 """
 from HousingPriceScraper.HousingPriceScraper.functions.menus import basic_menu
 from HousingPriceScraper.HousingPriceScraper.processes.set_settings import settings_menu

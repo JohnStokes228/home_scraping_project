@@ -1,9 +1,6 @@
 # home_scraping_project
 
-home made web scraping project initially designed for scraping house prices (hence all the project names) however they mostly block scrapers from those sites and i dont want to be too norty at the moment so its barely been used for this purpose. instead, I've been using it to fuel my other projects. The code is a bit of a toy in that its full of (terribly written) text menus with loads of options that probably just wont get used but it was a fun and educational experience to build from scratch so ack well. 
-
-current progress tracked at:
-https://johnno.atlassian.net/jira/software/projects/WSH/boards/1
+home made web scraping project initially designed for scraping house prices (hence all the project names) however they mostly block scrapers from those sites and i dont want to be too norty at the moment so its barely been used for this purpose. instead, I've been using it to fuel my other projects. The code is a bit of a toy in that its full of (terribly written spaghetti code) text menus with loads of options that probably just wont get used but it was a fun and educational experience to build from scratch so ack well. 
 
 currently at v1, and waiting until its been used enough to determine what the most important next steps might be. most up to date branch is called 'V2_branch', I have no idea why. seems like the sort of joke I'd make though doesnt it. 
   

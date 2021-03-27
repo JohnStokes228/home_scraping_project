@@ -4,3 +4,5 @@ beautifulsoup4==4.9.1
 selenium==3.141.0
 scrapy-random-useragent==0.2
 unidecode==1.1.1
+youtube-dl==2021.3.25
+pafy==0.5.5

@@ -17,8 +17,3 @@ your spider should then be ready to run.
 # config options
 
 # post scrape validation
-
- 
-
-
-

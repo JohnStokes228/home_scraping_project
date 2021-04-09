@@ -1,20 +1,25 @@
 """
-file containing all spiders produced as favours for others. contents currently includes:
+contains all mma related spiders, currently including:
 
-- smash bros footage scraping spiders for will
-
-and thats it I'm literally so selfish :O
+- ufcstats
+- sherdog
+- wikipedia
 """
-from HousingPriceScraper.HousingPriceScraper.spiders.FavourSpiders.VodsMelee import VodsMeleeBaseSpider, VodsMeleeAttrSpider
+from HousingPriceScraper.HousingPriceScraper.spiders.MMASpiders.Sherdog import SherdogBaseSpider
+from HousingPriceScraper.HousingPriceScraper.spiders.MMASpiders.UFCStats import UFCStatsBaseSpider
+from HousingPriceScraper.HousingPriceScraper.spiders.MMASpiders.Wikipedia import (
+    WikipediaCampBaseSpider,
+    WikipediaFighterBaseSpider
+)
 from HousingPriceScraper.HousingPriceScraper.functions.data_management import date_today
 
 
-group_path = 'HousingPriceScraper/HousingPriceScraper/data/raw_data/favour_spiders/'
+group_path = 'HousingPriceScraper/HousingPriceScraper/data/raw_data/mma_spiders/'
 
 
-class VodsMelee(VodsMeleeBaseSpider):
+class WikipediaCampItems(WikipediaCampBaseSpider):
 
-    name = 'vods-melee-items'
+    name = 'wikipedia-camp-items'
     item_data = []
     attribute_data = []
     requests = []
@@ -29,9 +34,9 @@ class VodsMelee(VodsMeleeBaseSpider):
     data_path = '{}/{}/{}'.format(group_path, name.rsplit('-', 1)[0], date_today())
 
 
-class VodsMeleeAttributes(VodsMeleeAttrSpider):
+class WikipediaFigherItems(WikipediaFighterBaseSpider):
 
-    name = 'vods-melee-attributes'
+    name = 'wikipedia-fighter-items'
     item_data = []
     attribute_data = []
     requests = []
@@ -46,9 +51,26 @@ class VodsMeleeAttributes(VodsMeleeAttrSpider):
     data_path = '{}/{}/{}'.format(group_path, name.rsplit('-', 1)[0], date_today())
 
 
-class VodsMeleeCombiSpider(VodsMeleeBaseSpider, VodsMeleeAttrSpider):
+class SherdogItems(SherdogBaseSpider):
 
-    name = 'vods-melee-combi'
+    name = 'sherdog-items'
+    item_data = []
+    attribute_data = []
+    requests = []
+    responses = []
+    scrape_log = {date_today(): {'no_length_fails': 0,
+                                 'no_NULL_fails': 0,
+                                 'no_runs': 0,
+                                 'no_response_urls': 0,
+                                 'no_request_urls': 0,
+                                 'missed_urls': [],
+                                 'no_pages_scraped': 0}}
+    data_path = '{}/{}/{}'.format(group_path, name.rsplit('-', 1)[0], date_today())
+
+
+class UFCStatsItems(UFCStatsBaseSpider):
+
+    name = 'ufc-stats-items'
     item_data = []
     attribute_data = []
     requests = []

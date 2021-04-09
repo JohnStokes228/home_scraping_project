@@ -29,7 +29,7 @@ class VodsMeleeBaseSpider(PerceptiveAncestorSpider):
             self.validate_save_scraped_data(response.url, elements, date_vars=False)
             btn = self.find_press_button("//a[@title='Go to next page']", centralise=True)
             self.responses.append(response.url)
-            
+
             if hasattr(self, 'get_attributes'):
                 for url in elements['video_url']:
                     yield scrapy.Request(url=url, callback=self.get_attributes)
@@ -52,5 +52,3 @@ class VodsMeleeAttrSpider(AncestorSpider):
         self.validate_save_scraped_data(response.url, video_title, date_vars=False, attrs=True)
 
         self.requests.append(response.url)
-
-

@@ -2,6 +2,12 @@
     "vods-melee-items" : [
       "https://vods.co/melee"
     ],
+    "wikipedia-camp-items": [
+        "https://en.wikipedia.org/wiki/List_of_professional_MMA_training_camps"
+    ],
+    "wikipedia-fighter-items": [
+        "https://en.wikipedia.org/wiki/List_of_current_UFC_fighters"
+    ],
     "criterion-collection-items": [
         "https://www.criterion.com/shop/browse/list"
     ],

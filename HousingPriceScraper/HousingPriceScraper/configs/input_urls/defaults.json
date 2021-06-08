@@ -231,5 +231,8 @@
     ],
     "dummy-quotes-items": [
         "http://quotes.toscrape.com/"
+    ],
+    "bank-holiday-items": [
+        "http://ukbankholidays.co.uk"
     ]
 }

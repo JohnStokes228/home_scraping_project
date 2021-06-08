@@ -5,8 +5,6 @@ contains all mma related spiders, currently including:
 - sherdog
 - wikipedia
 """
-from HousingPriceScraper.HousingPriceScraper.spiders.MMASpiders.Sherdog import SherdogBaseSpider
-from HousingPriceScraper.HousingPriceScraper.spiders.MMASpiders.UFCStats import UFCStatsBaseSpider
 from HousingPriceScraper.HousingPriceScraper.spiders.MMASpiders.Wikipedia import (
     WikipediaCampBaseSpider,
     WikipediaFighterBaseSpider

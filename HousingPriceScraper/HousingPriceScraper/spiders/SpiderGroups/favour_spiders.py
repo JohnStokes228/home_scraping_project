@@ -6,10 +6,28 @@ file containing all spiders produced as favours for others. contents currently i
 and thats it I'm literally so selfish :O
 """
 from HousingPriceScraper.HousingPriceScraper.spiders.FavourSpiders.VodsMelee import VodsMeleeBaseSpider, VodsMeleeAttrSpider
+from HousingPriceScraper.HousingPriceScraper.spiders.FavourSpiders.BankHolidays import BankHolidayBaseSpider
 from HousingPriceScraper.HousingPriceScraper.functions.data_management import date_today
 
 
 group_path = 'HousingPriceScraper/HousingPriceScraper/data/raw_data/favour_spiders/'
+
+
+class BankHolidaysUK(BankHolidayBaseSpider):
+
+    name = 'bank-holiday-items'
+    item_data = []
+    attribute_data = []
+    requests = []
+    responses = []
+    scrape_log = {date_today(): {'no_length_fails': 0,
+                                 'no_NULL_fails': 0,
+                                 'no_runs': 0,
+                                 'no_response_urls': 0,
+                                 'no_request_urls': 0,
+                                 'missed_urls': [],
+                                 'no_pages_scraped': 0}}
+    data_path = '{}/{}/{}'.format(group_path, name.rsplit('-', 1)[0], date_today())
 
 
 class VodsMelee(VodsMeleeBaseSpider):
